@@ -27,7 +27,7 @@ public class ScheduleMeetingRoomController: ControllerBase
     #region Api - Методы
 
     /// <summary>
-    /// Получение расписание комнаты
+    /// Расписание комнаты
     /// </summary>
     /// <param name="id">Id комнаты</param>
     /// <returns>Расписание комнаты</returns>
