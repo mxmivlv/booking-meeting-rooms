@@ -24,5 +24,5 @@ public interface IRepository
     /// <summary>
     /// Разбронирование комнат (HostedService)
     /// </summary>
-    public Task UnbookingMeetingRoomAsync();
+    public Task UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
 }

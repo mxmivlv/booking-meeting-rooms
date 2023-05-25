@@ -18,8 +18,6 @@ public class BookingMeetingRoom
 
     #region Конструктор
 
-    private BookingMeetingRoom() {}
-    
     public BookingMeetingRoom(DateOnly dateMeeting, TimeOnly startTimeMeeting, TimeOnly endTimeMeeting, Guid meetingRoomId)
     {
         Id = Guid.NewGuid();

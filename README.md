@@ -11,3 +11,14 @@
     4. Presentation:
         - реализован хостед сервис для разбронирования комнат.
         - используется два контроллера, DI контейнеры, swagger.
+Итерация 2.
+    1. Infrastructure:
+        - поменяна логика бронирования комнат, добавлена распределенная блокировка Redis.
+        - добавлен класс ServiceCollectionExtensions.
+    2. Presentation:
+        - добавлен фильтр исключений.
+        - добавлен класс ServiceCollectionExtensions.
+        - настроен Logger с помощью serilog.
+    3. Application:
+        - добавлен класс ServiceCollectionExtensions.
+        - реализован Pipelines с помощью MediatR (пишутся логи с информацией, какие методы выполняются). 

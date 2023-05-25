@@ -32,7 +32,12 @@ public class PostUnbookingMeetingRoomHandler: IRequestHandler<PostUnbookingMeeti
     /// <returns>true</returns>
     public async Task<bool> Handle(PostUnbookingMeetingRoomRequest request, CancellationToken cancellationToken)
     {
-        await _repository.UnbookingMeetingRoomAsync();
+        // Получить текущую дату
+        var currentDateOnly = DateOnly.FromDateTime(DateTime.Now);
+        // Получить текущее время
+        var currentTimeOnly = TimeOnly.FromDateTime(DateTime.Now);
+        
+        await _repository.UnbookingMeetingRoomAsync(currentDateOnly, currentTimeOnly);
 
         return true;
     }

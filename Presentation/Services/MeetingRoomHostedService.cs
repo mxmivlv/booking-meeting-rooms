@@ -27,19 +27,16 @@ public class MeetingRoomHostedService: BackgroundService
     /// </summary>
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        await Task.Run( async () =>
+        while (!cancellationToken.IsCancellationRequested)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            using (IServiceScope scope = _serviceProvider.CreateScope())
             {
-                using (IServiceScope scope = _serviceProvider.CreateScope())
-                {
-                    IMediator mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                IMediator mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-                    await mediator.Send(new PostUnbookingMeetingRoomRequest());
-                }
-                await Task.Delay(TimeSpan.FromSeconds(180));
+                await mediator.Send(new PostUnbookingMeetingRoomRequest());
             }
-        });
+            await Task.Delay(TimeSpan.FromSeconds(180));
+        }
     }
 
     #endregion

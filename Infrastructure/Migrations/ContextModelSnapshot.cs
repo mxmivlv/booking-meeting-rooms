@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-    [DbContext(typeof(Repository))]
-    partial class RepositoryModelSnapshot : ModelSnapshot
+    [DbContext(typeof(Context))]
+    partial class ContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -72,31 +72,31 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ae7b8e38-f3b5-4a4b-a47a-fa8f0ef614a0"),
+                            Id = new Guid("dbe22759-12c7-40e1-af84-66d3bffe3cce"),
                             Description = "Описание переговорной комнаты.",
                             Name = "Переговорная комната 1."
                         },
                         new
                         {
-                            Id = new Guid("7e972248-72c6-41b4-81a4-d63591c6d270"),
+                            Id = new Guid("9f78e173-f484-42c6-b82d-ce6ffecf9220"),
                             Description = "Описание переговорной комнаты.",
                             Name = "Переговорная комната 2."
                         },
                         new
                         {
-                            Id = new Guid("5841b8ce-93fb-49b7-a033-8ae463e35311"),
+                            Id = new Guid("d2e32f34-83c3-4fbe-9243-92c71c8b631b"),
                             Description = "Описание переговорной комнаты.",
                             Name = "Переговорная комната 3."
                         },
                         new
                         {
-                            Id = new Guid("0c55867b-0b28-45ba-ad05-42379246b26f"),
+                            Id = new Guid("6e63e69e-77b1-419f-9a39-a3ff2f433763"),
                             Description = "Описание переговорной комнаты.",
                             Name = "Переговорная комната 4."
                         },
                         new
                         {
-                            Id = new Guid("ac6ed4c4-3f1e-43d7-9a91-1bf72a047825"),
+                            Id = new Guid("0011e572-1fc7-4311-bc49-baa947e3160b"),
                             Description = "Описание переговорной комнаты.",
                             Name = "Переговорная комната 5."
                         });
