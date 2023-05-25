@@ -27,9 +27,6 @@ public class MeetingRoom
     #endregion
 
     #region Методы
-    
-    //TODO В методе бронирования, комната не добавляется в коллекцию - возникает ошибка бд (нет новых полей для добавления)
-    //TODO Добавление реализовать на стороне бд
 
     /// <summary>
     /// Бронирование комнаты
@@ -57,7 +54,7 @@ public class MeetingRoom
             if (BookingMeetingRooms.Count == 0)
             {
                 var returnBookingMeetingRoom = new BookingMeetingRoom(dateMeeting, startTimeMeeting, endTimeMeeting, Id);
-                //BookingMeetingRooms.Add(returnBookingMeetingRoom);
+                BookingMeetingRooms.Add(returnBookingMeetingRoom);
 
                 return returnBookingMeetingRoom;
             }
@@ -84,20 +81,38 @@ public class MeetingRoom
                     rightBorderBookingMeetingRoom == null)
                 {
                     var returnBookingMeetingRoom = new BookingMeetingRoom(dateMeeting, startTimeMeeting, endTimeMeeting, Id);
-                    //BookingMeetingRooms.Add(returnBookingMeetingRoom);
+                    BookingMeetingRooms.Add(returnBookingMeetingRoom);
 
                     return returnBookingMeetingRoom;
                 }
                 else
                 {
-                    throw new Exception("Забронировать комнату нельзя," +
-                                                " время бронирования новой комнаты пересекается с ранее забронированными комнатами");
+                    throw new Exception("забронировать комнату нельзя." +
+                                                " Время бронирования новой комнаты пересекается с ранее забронированными комнатами.");
                 }
             }
         }
         else
         {
-            throw new Exception("Не верное время или дата бронирования");
+            throw new Exception("не верное время или дата бронирования.");
+        }
+    }
+
+    /// <summary>
+    /// Разбронирование комнаты
+    /// </summary>
+    /// <param name="currentDateOnly">Текущая дата</param>
+    /// <param name="currentTimeOnly">Текущее время</param>
+    public void UnbookingRoom(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
+    {
+        var bookingMeetingRooms = BookingMeetingRooms
+            .Where(e => (e.DateMeeting < currentDateOnly) 
+                        || (e.DateMeeting == currentDateOnly && e.EndTimeMeeting < currentTimeOnly))
+            .ToList();
+
+        foreach (var item in bookingMeetingRooms)
+        {
+            BookingMeetingRooms.Remove(item);
         }
     }
 

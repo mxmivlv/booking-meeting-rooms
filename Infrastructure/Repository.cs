@@ -1,55 +1,34 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Domain.Interfaces.Infrastructure;
+using RedLockNet.SERedis;
+using RedLockNet.SERedis.Configuration;
+using StackExchange.Redis;
 
 namespace Infrastructure;
 
-public class Repository : DbContext, IRepository
+public class Repository : IRepository
 {
-    #region Свойства
+    #region Поле
 
-    public DbSet<MeetingRoom> MeetingRooms { get; set; }
+    private readonly Context _context;
 
-    public DbSet<BookingMeetingRoom> BookingMeetingRooms { get; set; }
+    private RedLockFactory _redLockFactory;
 
     #endregion
 
     #region Конструктор
 
-    public Repository() { }
-
-    #endregion
-
-    #region Базовые методы
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public Repository(Context context)
     {
-        optionsBuilder.UseNpgsql("Server=localhost;User Id=Admin;Password=Admin;Port=5432;Database=Project_6");
-    }
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(Repository).Assembly);
-        SeedDataBase(modelBuilder);
-    }
-
-    /// <summary>
-    /// Заполнение бд начальными данными
-    /// </summary>
-    private void SeedDataBase(ModelBuilder modelBuilder)
-    {
-        var meetingRoom1 = new MeetingRoom("Переговорная комната 1.", "Описание переговорной комнаты.");
-        var meetingRoom2 = new MeetingRoom("Переговорная комната 2.", "Описание переговорной комнаты.");
-        var meetingRoom3 = new MeetingRoom("Переговорная комната 3.", "Описание переговорной комнаты.");
-        var meetingRoom4 = new MeetingRoom("Переговорная комната 4.", "Описание переговорной комнаты.");
-        var meetingRoom5 = new MeetingRoom("Переговорная комната 5.", "Описание переговорной комнаты.");
-
-        modelBuilder.Entity<MeetingRoom>().HasData(meetingRoom1, meetingRoom2, meetingRoom3, meetingRoom4, meetingRoom5);
+        _context = context;
+        
+        ConnectRedis();
     }
 
     #endregion
 
-    #region Интерфейсные методы
+    #region методы
 
     /// <summary>
     /// Бронирование комнаты
@@ -61,16 +40,37 @@ public class Repository : DbContext, IRepository
     /// <returns>Комнату с данными</returns>
     public async Task<BookingMeetingRoom> BookingMeetingRoomAsync(Guid id, DateOnly dateMeeting, TimeOnly startTimeMeeting, TimeOnly endTimeMeeting)
     {
-        var meetingRoom = await MeetingRooms
-                              .Include(e => e.BookingMeetingRooms)
-                              .FirstOrDefaultAsync(e => e.Id == id)
-                          ?? throw new Exception("Данной комнаты нет.");
+        // Ресурс который блокируется
+        var resource = "local";
         
-        var bookingMeetingRoom = meetingRoom.BookingRoom(dateMeeting, startTimeMeeting, endTimeMeeting);
-        BookingMeetingRooms.Add(bookingMeetingRoom);
-        await SaveChangesAsync();
-
-        return bookingMeetingRoom;
+        // Максимальное время блокировки при сбое
+        var expiry = TimeSpan.FromSeconds(30);
+        
+        // Время блокировки ресурса
+        var wait = TimeSpan.FromSeconds(10);
+        
+        // Попытки получить доступ
+        var retry = TimeSpan.FromSeconds(1);
+        
+        await using (var redLock = await _redLockFactory.CreateLockAsync(resource, expiry, wait, retry))
+        {
+            if (redLock.IsAcquired)
+            {
+                var meetingRoom = await _context.MeetingRooms
+                                      .Include(e => e.BookingMeetingRooms)
+                                      .FirstOrDefaultAsync(e => e.Id == id)
+                                  ?? throw new Exception("комнаты с таким Id нет.");
+        
+                var bookingMeetingRoom = meetingRoom.BookingRoom(dateMeeting, startTimeMeeting, endTimeMeeting);
+                await _context.SaveChangesAsync();
+                
+                return bookingMeetingRoom;
+            }
+            else
+            {
+                throw new Exception("Превышено ожидание для бронирования комнаты.");
+            }
+        }
     }
 
     /// <summary>
@@ -80,12 +80,12 @@ public class Repository : DbContext, IRepository
     /// <returns>Расписание комнаты</returns>
     public async Task<MeetingRoom> GetScheduleAsync(Guid id)
     {
-        var meetingRoom = await MeetingRooms
+        var meetingRoom = await _context.MeetingRooms
                               .Include(e => e.BookingMeetingRooms
                                   .OrderBy(e => e.DateMeeting)
                                   .ThenBy(e => e.StartTimeMeeting))
                               .FirstOrDefaultAsync(e => e.Id == id)
-                          ?? throw new Exception("Данной комнаты нет.");
+                          ?? throw new Exception("комнаты с таким Id нет.");
 
         return meetingRoom;
     }
@@ -93,21 +93,35 @@ public class Repository : DbContext, IRepository
     /// <summary>
     /// Разбронирование комнаты
     /// </summary>
-    public async Task UnbookingMeetingRoomAsync()
+    public async Task UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
     {
-        // Получить текущую дату
-        var currentDateOnly = DateOnly.FromDateTime(DateTime.Now);
-        // Получить текущее время
-        var currentTimeOnly = TimeOnly.FromDateTime(DateTime.Now);
+        var meetingRooms = _context.MeetingRooms
+            .Include(e => e.BookingMeetingRooms)
+            .ToList();
 
-        // Получить коллекцию для разбронирования
-        var bookingMeetingRooms = MeetingRooms
-            .SelectMany(e => e.BookingMeetingRooms)
-            .Where(e => (e.DateMeeting < currentDateOnly) 
-                        || (e.DateMeeting == currentDateOnly && e.EndTimeMeeting < currentTimeOnly));
+        foreach (var item in meetingRooms)
+        {
+            item.UnbookingRoom(currentDateOnly, currentTimeOnly);
+        }
+        
+        await _context.SaveChangesAsync();
+    }
+    
+    /// <summary>
+    /// Подключение к Redis
+    /// </summary>
+    private void ConnectRedis()
+    {
+        // Создаем подключение
+        var _connection = ConnectionMultiplexer.Connect("localhost");
 
-        BookingMeetingRooms.RemoveRange(bookingMeetingRooms);
-        await SaveChangesAsync();
+        // Добавляем подключение
+        var multiplexers = new List<RedLockMultiplexer>
+        {
+            _connection,
+        };
+        
+        _redLockFactory = RedLockFactory.Create(multiplexers);
     }
 
     #endregion
