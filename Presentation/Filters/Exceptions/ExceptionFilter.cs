@@ -5,6 +5,8 @@ namespace Presentation.Filters.Exceptions;
 
 public class ExceptionFilter : Attribute, IExceptionFilter
 {
+    #region Метод
+
     /// <summary>
     /// Метод обработки исключений
     /// </summary>
@@ -26,4 +28,6 @@ public class ExceptionFilter : Attribute, IExceptionFilter
         };
         context.ExceptionHandled = true;
     }
+
+    #endregion
 }

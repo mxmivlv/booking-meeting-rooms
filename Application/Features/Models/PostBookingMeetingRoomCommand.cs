@@ -1,9 +1,9 @@
-﻿using Application.Models.Dto;
-using MediatR;
+﻿using Application.Interfaces.Commands;
+using Application.Models.Dto;
 
 namespace Application.Features.Models;
 
-public class PostBookingMeetingRoomRequest: IRequest<BookingMeetingRoomDto>
+public class PostBookingMeetingRoomCommand: ICommand<BookingMeetingRoomDto>
 {
     #region Свойства
 
@@ -19,7 +19,7 @@ public class PostBookingMeetingRoomRequest: IRequest<BookingMeetingRoomDto>
 
     #region Конструктор
 
-    public PostBookingMeetingRoomRequest(Guid id, string dateMeeting, string startTimeMeeting, string endTimeMeeting)
+    public PostBookingMeetingRoomCommand(Guid id, string dateMeeting, string startTimeMeeting, string endTimeMeeting)
     {
         Id = id;
         DateMeeting = dateMeeting;

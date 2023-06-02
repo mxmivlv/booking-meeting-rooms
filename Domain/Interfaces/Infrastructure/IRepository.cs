@@ -24,5 +24,11 @@ public interface IRepository
     /// <summary>
     /// Разбронирование комнат (HostedService)
     /// </summary>
-    public Task UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
+    public void UnbookingMeetingRoom(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
+
+    /// <summary>
+    /// Сохранение данных в БД
+    /// </summary>
+    /// <returns></returns>
+    public void Save();
 }

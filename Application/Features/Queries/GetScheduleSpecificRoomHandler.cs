@@ -1,12 +1,12 @@
 ﻿using Application.Features.Models;
+using Application.Interfaces.Queries;
 using Application.Models.Dto;
 using AutoMapper;
 using Domain.Interfaces.Infrastructure;
-using MediatR;
 
 namespace Application.Features.Queries;
 
-public class GetScheduleSpecificRoomHandler : IRequestHandler<GetScheduleSpecificRoomRequest, MeetingRoomDto>
+public class GetScheduleSpecificRoomHandler : IQueryHandler<GetScheduleSpecificRoomQueries, MeetingRoomDto>
 {
     #region Поля
 
@@ -31,12 +31,12 @@ public class GetScheduleSpecificRoomHandler : IRequestHandler<GetScheduleSpecifi
     /// <summary>
     /// Получение расписания у конкретной комнаты
     /// </summary>
-    /// <param name="request">Запрос</param>
+    /// <param name="queries">Запрос</param>
     /// <param name="cancellationToken">Токен</param>
     /// <returns>Расписание комнаты</returns>
-    public async Task<MeetingRoomDto> Handle(GetScheduleSpecificRoomRequest request, CancellationToken cancellationToken)
+    public async Task<MeetingRoomDto> Handle(GetScheduleSpecificRoomQueries queries, CancellationToken cancellationToken)
     {
-        var meetingRoom = await _repository.GetScheduleAsync(request.Id);
+        var meetingRoom = await _repository.GetScheduleAsync(queries.Id);
             
         return _mapper.Map<MeetingRoomDto>(meetingRoom);
     }

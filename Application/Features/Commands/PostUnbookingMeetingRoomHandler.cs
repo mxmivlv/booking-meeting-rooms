@@ -1,22 +1,23 @@
 ﻿using Application.Features.Models;
-using Domain.Interfaces.Infrastructure;
+using Application.Interfaces.Commands;
+using Application.Services;
 using MediatR;
 
 namespace Application.Features.Commands;
 
-public class PostUnbookingMeetingRoomHandler: IRequestHandler<PostUnbookingMeetingRoomRequest, bool>
+public class PostUnbookingMeetingRoomHandler: ICommandHandler<PostUnbookingMeetingRoomCommand, Unit>
 {
     #region Поле
 
-    private readonly IRepository _repository;
+    private readonly LockingService _lockingService;
 
     #endregion
 
     #region Конструктор
 
-    public PostUnbookingMeetingRoomHandler(IRepository repository)
+    public PostUnbookingMeetingRoomHandler(LockingService lockingService)
     {
-        _repository = repository;
+        _lockingService = lockingService;
     }
 
     #endregion
@@ -26,20 +27,13 @@ public class PostUnbookingMeetingRoomHandler: IRequestHandler<PostUnbookingMeeti
     /// <summary>
     /// Метод разбронирования комнат
     /// </summary>
-    /// <param name="request">Запрос</param>
+    /// <param name="command">Запрос</param>
     /// <param name="cancellationToken">Токен</param>
-    /// <returns>true</returns>
-    /// <returns>true</returns>
-    public async Task<bool> Handle(PostUnbookingMeetingRoomRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(PostUnbookingMeetingRoomCommand command, CancellationToken cancellationToken)
     {
-        // Получить текущую дату
-        var currentDateOnly = DateOnly.FromDateTime(DateTime.Now);
-        // Получить текущее время
-        var currentTimeOnly = TimeOnly.FromDateTime(DateTime.Now);
-        
-        await _repository.UnbookingMeetingRoomAsync(currentDateOnly, currentTimeOnly);
+        await _lockingService.UnbookingRoomAsync();
 
-        return true;
+        return await Unit.Task;
     }
 
     #endregion
