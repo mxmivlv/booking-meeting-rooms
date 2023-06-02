@@ -52,12 +52,17 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "Description", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("0011e572-1fc7-4311-bc49-baa947e3160b"), "Описание переговорной комнаты.", "Переговорная комната 5." },
-                    { new Guid("6e63e69e-77b1-419f-9a39-a3ff2f433763"), "Описание переговорной комнаты.", "Переговорная комната 4." },
-                    { new Guid("9f78e173-f484-42c6-b82d-ce6ffecf9220"), "Описание переговорной комнаты.", "Переговорная комната 2." },
-                    { new Guid("d2e32f34-83c3-4fbe-9243-92c71c8b631b"), "Описание переговорной комнаты.", "Переговорная комната 3." },
-                    { new Guid("dbe22759-12c7-40e1-af84-66d3bffe3cce"), "Описание переговорной комнаты.", "Переговорная комната 1." }
+                    { new Guid("039ae28c-071f-4817-8508-5464b2cc5309"), "Описание переговорной комнаты.", "Переговорная комната 4." },
+                    { new Guid("041eb44a-a077-4239-9719-9dfaf5591b3a"), "Описание переговорной комнаты.", "Переговорная комната 5." },
+                    { new Guid("0df8a713-4406-4fc1-9b99-d4b57ea84ffe"), "Описание переговорной комнаты.", "Переговорная комната 1." },
+                    { new Guid("43cee076-a20a-44f7-8d34-dfb83e391dc7"), "Описание переговорной комнаты.", "Переговорная комната 2." },
+                    { new Guid("8817a810-2574-4652-8752-8fcec3ab9810"), "Описание переговорной комнаты.", "Переговорная комната 3." }
                 });
+
+            migrationBuilder.InsertData(
+                table: "BookingMeetingRooms",
+                columns: new[] { "Id", "DateMeeting", "EndTimeMeeting", "MeetingRoomId", "StartTimeMeeting" },
+                values: new object[] { new Guid("0892d620-d083-4b1e-93e7-d7faa9e2c765"), new DateOnly(2023, 10, 25), new TimeOnly(11, 0, 0), new Guid("0df8a713-4406-4fc1-9b99-d4b57ea84ffe"), new TimeOnly(10, 0, 0) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookingMeetingRooms_MeetingRoomId",

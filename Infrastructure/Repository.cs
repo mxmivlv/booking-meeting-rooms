@@ -2,14 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Domain.Interfaces.Infrastructure;
 using RedLockNet.SERedis;
-using RedLockNet.SERedis.Configuration;
-using StackExchange.Redis;
 
 namespace Infrastructure;
 
 public class Repository : IRepository
 {
-    #region Поле
+    #region Поля
 
     private readonly Context _context;
 
@@ -22,8 +20,6 @@ public class Repository : IRepository
     public Repository(Context context)
     {
         _context = context;
-        
-        ConnectRedis();
     }
 
     #endregion
@@ -40,37 +36,14 @@ public class Repository : IRepository
     /// <returns>Комнату с данными</returns>
     public async Task<BookingMeetingRoom> BookingMeetingRoomAsync(Guid id, DateOnly dateMeeting, TimeOnly startTimeMeeting, TimeOnly endTimeMeeting)
     {
-        // Ресурс который блокируется
-        var resource = "local";
+        var meetingRoom = await _context.MeetingRooms
+                              .Include(e => e.BookingMeetingRooms)
+                              .FirstOrDefaultAsync(e => e.Id == id)
+                          ?? throw new Exception("комнаты с таким Id нет.");
         
-        // Максимальное время блокировки при сбое
-        var expiry = TimeSpan.FromSeconds(30);
-        
-        // Время блокировки ресурса
-        var wait = TimeSpan.FromSeconds(10);
-        
-        // Попытки получить доступ
-        var retry = TimeSpan.FromSeconds(1);
-        
-        await using (var redLock = await _redLockFactory.CreateLockAsync(resource, expiry, wait, retry))
-        {
-            if (redLock.IsAcquired)
-            {
-                var meetingRoom = await _context.MeetingRooms
-                                      .Include(e => e.BookingMeetingRooms)
-                                      .FirstOrDefaultAsync(e => e.Id == id)
-                                  ?? throw new Exception("комнаты с таким Id нет.");
-        
-                var bookingMeetingRoom = meetingRoom.BookingRoom(dateMeeting, startTimeMeeting, endTimeMeeting);
-                await _context.SaveChangesAsync();
-                
-                return bookingMeetingRoom;
-            }
-            else
-            {
-                throw new Exception("Превышено ожидание для бронирования комнаты.");
-            }
-        }
+        var bookingMeetingRoom = meetingRoom.BookingRoom(dateMeeting, startTimeMeeting, endTimeMeeting);
+
+        return bookingMeetingRoom;
     }
 
     /// <summary>
@@ -93,7 +66,7 @@ public class Repository : IRepository
     /// <summary>
     /// Разбронирование комнаты
     /// </summary>
-    public async Task UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
+    public void UnbookingMeetingRoom(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
     {
         var meetingRooms = _context.MeetingRooms
             .Include(e => e.BookingMeetingRooms)
@@ -103,25 +76,14 @@ public class Repository : IRepository
         {
             item.UnbookingRoom(currentDateOnly, currentTimeOnly);
         }
-        
-        await _context.SaveChangesAsync();
     }
     
     /// <summary>
-    /// Подключение к Redis
+    /// Сохранение данных в бд
     /// </summary>
-    private void ConnectRedis()
+    public void Save()
     {
-        // Создаем подключение
-        var _connection = ConnectionMultiplexer.Connect("localhost");
-
-        // Добавляем подключение
-        var multiplexers = new List<RedLockMultiplexer>
-        {
-            _connection,
-        };
-        
-        _redLockFactory = RedLockFactory.Create(multiplexers);
+        _context.SaveChanges();
     }
 
     #endregion

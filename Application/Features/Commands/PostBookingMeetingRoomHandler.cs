@@ -1,16 +1,16 @@
 ﻿using Application.Features.Models;
+using Application.Interfaces.Commands;
 using Application.Models.Dto;
+using Application.Services;
 using AutoMapper;
-using Domain.Interfaces.Infrastructure;
-using MediatR;
 
 namespace Application.Features.Commands;
 
-public class PostBookingMeetingRoomHandler: IRequestHandler<PostBookingMeetingRoomRequest, BookingMeetingRoomDto>
+public class PostBookingMeetingRoomHandler: ICommandHandler<PostBookingMeetingRoomCommand, BookingMeetingRoomDto>
 {
     #region Поля
 
-    private readonly IRepository _repository;
+    private readonly LockingService _lockingService;
     
     private readonly IMapper _mapper;
 
@@ -18,9 +18,9 @@ public class PostBookingMeetingRoomHandler: IRequestHandler<PostBookingMeetingRo
     
     #region Конструктор
 
-    public PostBookingMeetingRoomHandler(IRepository repository, IMapper mapper)
+    public PostBookingMeetingRoomHandler(LockingService lockingService, IMapper mapper)
     {
-        _repository = repository;
+        _lockingService = lockingService;
         _mapper = mapper;
     }
 
@@ -31,17 +31,13 @@ public class PostBookingMeetingRoomHandler: IRequestHandler<PostBookingMeetingRo
     /// <summary>
     /// Метод бронирования комнат
     /// </summary>
-    /// <param name="request">Запрос</param>
+    /// <param name="command">Запрос</param>
     /// <param name="cancellationToken">Токен</param>
     /// <returns>Комнату, которую забронировали</returns>
-    public async Task<BookingMeetingRoomDto> Handle(PostBookingMeetingRoomRequest request, CancellationToken cancellationToken)
+    public async Task<BookingMeetingRoomDto> Handle(PostBookingMeetingRoomCommand command, CancellationToken cancellationToken)
     {
-        var tempDateMeeting = DateOnly.Parse(request.DateMeeting);
-        var tempStartTimeMeeting = TimeOnly.Parse(request.StartTimeMeeting);
-        var tempEndTimeMeeting = TimeOnly.Parse(request.EndTimeMeeting);
-            
-        var bookingMeetingRoom = await _repository.BookingMeetingRoomAsync(request.Id, tempDateMeeting, tempStartTimeMeeting, tempEndTimeMeeting);
-            
+        var bookingMeetingRoom = await _lockingService.BookingRoomAsync(command);
+        
         return _mapper.Map<BookingMeetingRoomDto>(bookingMeetingRoom);
     }
 

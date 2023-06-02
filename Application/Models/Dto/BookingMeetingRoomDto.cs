@@ -9,6 +9,8 @@ public class BookingMeetingRoomDto
     public TimeOnly StartTimeMeeting { get; set; }
     
     public TimeOnly EndTimeMeeting { get; set; }
+    
+    public Guid MeetingRoomId { get; set; }
 
     #endregion
 }

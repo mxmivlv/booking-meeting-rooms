@@ -33,7 +33,7 @@ public class MeetingRoomHostedService: BackgroundService
             {
                 IMediator mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-                await mediator.Send(new PostUnbookingMeetingRoomRequest());
+                await mediator.Send(new PostUnbookingMeetingRoomCommand());
             }
             await Task.Delay(TimeSpan.FromSeconds(180));
         }

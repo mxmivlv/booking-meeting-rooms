@@ -34,7 +34,7 @@ public class ScheduleMeetingRoomController: ControllerBase
     [HttpPost]
     public async Task<MeetingRoomDto> ScheduleSpecificRoomAsync(Guid id)
     {
-        return await _mediator.Send(new GetScheduleSpecificRoomRequest(id));
+        return await _mediator.Send(new GetScheduleSpecificRoomQueries(id));
     }
 
     #endregion
