@@ -1,4 +1,4 @@
-﻿using Application.Features.Models;
+﻿using Application.Mediatr.Features.Models;
 using Application.Models.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

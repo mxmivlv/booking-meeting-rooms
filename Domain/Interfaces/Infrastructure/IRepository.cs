@@ -26,9 +26,5 @@ public interface IRepository
     /// </summary>
     public void UnbookingMeetingRoom(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
 
-    /// <summary>
-    /// Сохранение данных в БД
-    /// </summary>
-    /// <returns></returns>
-    public void Save();
+    public ICollection<BookingMeetingRoom> GetRoomsForNotification(DateOnly currentDateOnly, TimeOnly currentTimeOnly, TimeOnly maxTimeOnly);
 }

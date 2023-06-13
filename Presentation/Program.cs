@@ -1,16 +1,25 @@
 using Application.Extensions;
 using Infrastructure.Extensions;
+using Infrastructure.Settings;
 using Presentation.Extensions;
 using Serilog;
 using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Получение экземпляра класса
+var infrastructureSettings =  builder.Configuration.GetSection(nameof(InfrastructureSettings)).Get<InfrastructureSettings>();
+
+// Использование IOption<>
+builder.Services.Configure<InfrastructureSettings>(builder.Configuration.GetSection(nameof(InfrastructureSettings)));
+
+// Регистрация сервисов
 builder.Services
-    .AddInfrastructure(builder.Configuration)
+    .AddInfrastructure(infrastructureSettings)
     .AddApplication()
     .AddPresentation();
 
+// Регистрация Serialog
 builder.Host.UseSerilog(Log.Logger = new LoggerConfiguration()
     // минимальный уровень логирования - Debug
     .MinimumLevel.Debug()
@@ -19,7 +28,10 @@ builder.Host.UseSerilog(Log.Logger = new LoggerConfiguration()
     // расширяем логируемые данные с помощью LogContext
     .Enrich.FromLogContext()
     // пишем логи в консоль с использованием шаблона
-    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.Console
+    (
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}"
+    )
     .CreateLogger());
 
 var app = builder.Build();

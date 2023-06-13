@@ -10,9 +10,21 @@ public class MeetingRoomConfiguration : IEntityTypeConfiguration<MeetingRoom>
 
     public void Configure(EntityTypeBuilder<MeetingRoom> builder)
     {
-        builder.HasKey(q => q.Id);
-        builder.HasIndex(q => q.Name).HasDatabaseName("NameIndex").IsUnique();
-        builder.Property(q => q.Description).HasMaxLength(50);
+        builder.HasKey(q => q.IdRoom);
+        builder.Property(q => q.IdRoom)
+            .ValueGeneratedNever()
+            .IsRequired();
+
+        builder.HasIndex(q => q.NameRoom)
+            .HasDatabaseName("NameIndex")
+            .IsUnique();
+        builder.Property(q => q.NameRoom)
+            .IsRequired();
+        
+        
+        builder.Property(q => q.DescriptionRoom)
+            .HasMaxLength(50);
+        
         builder
             .HasMany(q => q.BookingMeetingRooms)
             .WithOne()

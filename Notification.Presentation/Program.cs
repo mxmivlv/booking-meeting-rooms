@@ -1,0 +1,34 @@
+using Notification.Application.Extensions;
+using Notification.Infrastructure.Extensions;
+using Notification.Infrastructure.Settings;
+using Notification.Presentation.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.Configure<NotificationInfrastructureSettings>
+    (
+        builder.Configuration.GetSection(nameof(NotificationInfrastructureSettings))
+    );
+
+builder.Services
+    .AddNotificationInfrastructure()
+    .AddNotificationPresentation()
+    .AddNotificationApplication();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
