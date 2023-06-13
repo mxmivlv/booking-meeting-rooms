@@ -4,11 +4,11 @@ public class MeetingRoom
 {
     #region Свойства
 
-    public Guid Id { get; }
+    public Guid IdRoom { get; }
     
-    public string Name { get; }
+    public string NameRoom { get; }
     
-    public string? Description { get; private set; }
+    public string? DescriptionRoom { get; private set; }
     
     public List<BookingMeetingRoom> BookingMeetingRooms { get; private set; }
 
@@ -16,11 +16,11 @@ public class MeetingRoom
 
     #region Конструктор
 
-    public MeetingRoom(string name, string? description)
+    public MeetingRoom(string nameRoom, string? descriptionRoom)
     {
-        Id = Guid.NewGuid();
-        Name = name;
-        Description = description;
+        IdRoom = Guid.NewGuid();
+        NameRoom = nameRoom;
+        DescriptionRoom = descriptionRoom;
         BookingMeetingRooms = new List<BookingMeetingRoom>();
     }
 
@@ -53,7 +53,7 @@ public class MeetingRoom
             // Если комнат нет, сразу добавляем
             if (BookingMeetingRooms.Count == 0)
             {
-                var returnBookingMeetingRoom = new BookingMeetingRoom(dateMeeting, startTimeMeeting, endTimeMeeting, Id);
+                var returnBookingMeetingRoom = new BookingMeetingRoom(dateMeeting, startTimeMeeting, endTimeMeeting, IdRoom);
                 BookingMeetingRooms.Add(returnBookingMeetingRoom);
 
                 return returnBookingMeetingRoom;
@@ -80,7 +80,7 @@ public class MeetingRoom
                     middleBorderBookingMeetingRoom == null &&
                     rightBorderBookingMeetingRoom == null)
                 {
-                    var returnBookingMeetingRoom = new BookingMeetingRoom(dateMeeting, startTimeMeeting, endTimeMeeting, Id);
+                    var returnBookingMeetingRoom = new BookingMeetingRoom(dateMeeting, startTimeMeeting, endTimeMeeting, IdRoom);
                     BookingMeetingRooms.Add(returnBookingMeetingRoom);
 
                     return returnBookingMeetingRoom;

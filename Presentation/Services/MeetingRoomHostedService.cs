@@ -1,4 +1,4 @@
-﻿using Application.Features.Models;
+﻿using Application.Mediatr.Features.Models;
 using MediatR;
 
 namespace Presentation.Services;
@@ -20,10 +20,10 @@ public class MeetingRoomHostedService: BackgroundService
     
     #endregion
 
-    #region Методы
+    #region Метод
 
     /// <summary>
-    /// Метод для разбронирования комнат
+    /// HostedService для разбронирования комнат
     /// </summary>
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {

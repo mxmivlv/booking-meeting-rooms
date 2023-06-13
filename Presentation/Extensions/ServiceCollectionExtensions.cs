@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
         });
         
         services.AddHostedService<MeetingRoomHostedService>();
+        services.AddHostedService<NotificationHostedService>();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.ConfigureSwaggerGen(options =>

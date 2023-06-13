@@ -24,7 +24,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.BookingMeetingRoom", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("IdBooking")
                         .HasColumnType("uuid");
 
                     b.Property<DateOnly>("DateMeeting")
@@ -33,13 +33,16 @@ namespace Infrastructure.Migrations
                     b.Property<TimeOnly>("EndTimeMeeting")
                         .HasColumnType("time without time zone");
 
+                    b.Property<bool>("IsNotification")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid>("MeetingRoomId")
                         .HasColumnType("uuid");
 
                     b.Property<TimeOnly>("StartTimeMeeting")
                         .HasColumnType("time without time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdBooking");
 
                     b.HasIndex("MeetingRoomId");
 
@@ -48,31 +51,31 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0892d620-d083-4b1e-93e7-d7faa9e2c765"),
+                            IdBooking = new Guid("f834bef5-765d-44fa-802a-c5ece9fdbc3b"),
                             DateMeeting = new DateOnly(2023, 10, 25),
                             EndTimeMeeting = new TimeOnly(11, 0, 0),
-                            MeetingRoomId = new Guid("0df8a713-4406-4fc1-9b99-d4b57ea84ffe"),
+                            IsNotification = false,
+                            MeetingRoomId = new Guid("854c1574-848d-4298-8b60-da581e9a3ea0"),
                             StartTimeMeeting = new TimeOnly(10, 0, 0)
                         });
                 });
 
             modelBuilder.Entity("Domain.Models.MeetingRoom", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("IdRoom")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("DescriptionRoom")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("NameRoom")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdRoom");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("NameRoom")
                         .IsUnique()
                         .HasDatabaseName("NameIndex");
 
@@ -81,33 +84,33 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0df8a713-4406-4fc1-9b99-d4b57ea84ffe"),
-                            Description = "Описание переговорной комнаты.",
-                            Name = "Переговорная комната 1."
+                            IdRoom = new Guid("854c1574-848d-4298-8b60-da581e9a3ea0"),
+                            DescriptionRoom = "Описание переговорной комнаты.",
+                            NameRoom = "Переговорная комната 1."
                         },
                         new
                         {
-                            Id = new Guid("43cee076-a20a-44f7-8d34-dfb83e391dc7"),
-                            Description = "Описание переговорной комнаты.",
-                            Name = "Переговорная комната 2."
+                            IdRoom = new Guid("6b72218d-afb6-42a5-bb1a-e538286158ba"),
+                            DescriptionRoom = "Описание переговорной комнаты.",
+                            NameRoom = "Переговорная комната 2."
                         },
                         new
                         {
-                            Id = new Guid("8817a810-2574-4652-8752-8fcec3ab9810"),
-                            Description = "Описание переговорной комнаты.",
-                            Name = "Переговорная комната 3."
+                            IdRoom = new Guid("7cff61ab-3925-491f-9f5a-7c941854c5e4"),
+                            DescriptionRoom = "Описание переговорной комнаты.",
+                            NameRoom = "Переговорная комната 3."
                         },
                         new
                         {
-                            Id = new Guid("039ae28c-071f-4817-8508-5464b2cc5309"),
-                            Description = "Описание переговорной комнаты.",
-                            Name = "Переговорная комната 4."
+                            IdRoom = new Guid("f5d3d181-48f3-48cf-8090-5275aa805670"),
+                            DescriptionRoom = "Описание переговорной комнаты.",
+                            NameRoom = "Переговорная комната 4."
                         },
                         new
                         {
-                            Id = new Guid("041eb44a-a077-4239-9719-9dfaf5591b3a"),
-                            Description = "Описание переговорной комнаты.",
-                            Name = "Переговорная комната 5."
+                            IdRoom = new Guid("9fae408a-37f0-41de-8840-e4b461b0bd64"),
+                            DescriptionRoom = "Описание переговорной комнаты.",
+                            NameRoom = "Переговорная комната 5."
                         });
                 });
 

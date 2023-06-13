@@ -1,17 +1,14 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Domain.Interfaces.Infrastructure;
-using RedLockNet.SERedis;
 
 namespace Infrastructure;
 
 public class Repository : IRepository
 {
-    #region Поля
+    #region Поле
 
     private readonly Context _context;
-
-    private RedLockFactory _redLockFactory;
 
     #endregion
 
@@ -38,7 +35,7 @@ public class Repository : IRepository
     {
         var meetingRoom = await _context.MeetingRooms
                               .Include(e => e.BookingMeetingRooms)
-                              .FirstOrDefaultAsync(e => e.Id == id)
+                              .FirstOrDefaultAsync(e => e.IdRoom == id)
                           ?? throw new Exception("комнаты с таким Id нет.");
         
         var bookingMeetingRoom = meetingRoom.BookingRoom(dateMeeting, startTimeMeeting, endTimeMeeting);
@@ -57,7 +54,7 @@ public class Repository : IRepository
                               .Include(e => e.BookingMeetingRooms
                                   .OrderBy(e => e.DateMeeting)
                                   .ThenBy(e => e.StartTimeMeeting))
-                              .FirstOrDefaultAsync(e => e.Id == id)
+                              .FirstOrDefaultAsync(e => e.IdRoom == id)
                           ?? throw new Exception("комнаты с таким Id нет.");
 
         return meetingRoom;
@@ -77,13 +74,24 @@ public class Repository : IRepository
             item.UnbookingRoom(currentDateOnly, currentTimeOnly);
         }
     }
-    
+
     /// <summary>
-    /// Сохранение данных в бд
+    /// Получение бронирований для оповещения
     /// </summary>
-    public void Save()
+    /// <param name="currentDateOnly">Текущая дата</param>
+    /// <param name="currentTimeOnly">Текущее время</param>
+    /// <param name="maxTimeOnly">Сдвиг по времени, чтоб был диапазон(10:00 - 11:00)</param>
+    /// <returns>Коллекцию бронирований</returns>
+    public ICollection<BookingMeetingRoom> GetRoomsForNotification(DateOnly currentDateOnly, TimeOnly currentTimeOnly, TimeOnly maxTimeOnly)
     {
-        _context.SaveChanges();
+        var collectionMeetingRoom =_context.BookingMeetingRooms
+            .Where(e => ((e.DateMeeting == currentDateOnly) 
+                         && (e.IsNotification == false)
+                         && (e.StartTimeMeeting > currentTimeOnly)
+                         && (e.StartTimeMeeting <= maxTimeOnly)))
+            .ToList();
+
+        return collectionMeetingRoom;
     }
 
     #endregion
