@@ -1,7 +1,10 @@
-﻿using Notification.Application.RabbitMQ.Interfaces;
+﻿using Notification.Application.Interfaces;
 
 namespace Notification.Presentation.Services;
 
+/// <summary>
+/// Отправка напоминаний о бронировании
+/// </summary>
 public class NotificationHostedService: BackgroundService
 {
     #region Поле
@@ -30,7 +33,7 @@ public class NotificationHostedService: BackgroundService
         {
             using (IServiceScope scope = _serviceProvider.CreateScope())
             {
-                var notification = scope.ServiceProvider.GetRequiredService<INotificationRabbitMQ>();
+                var notification = scope.ServiceProvider.GetRequiredService<IConsumerBus>();
                 notification.Listen();
             }
             await Task.Delay(TimeSpan.FromSeconds(10));

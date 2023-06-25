@@ -5,6 +5,9 @@ using Presentation.Services;
 
 namespace Presentation.Extensions;
 
+/// <summary>
+/// Расширение для подключения сервисов Presentation
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
@@ -17,8 +20,8 @@ public static class ServiceCollectionExtensions
             config.Filters.Add(new ExceptionFilter());
         });
         
-        services.AddHostedService<MeetingRoomHostedService>();
-        services.AddHostedService<NotificationHostedService>();
+        services.AddHostedService<UnbookingMeetingRoomHostedService>();
+        services.AddHostedService<ReminderNotificationHostedService>();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.ConfigureSwaggerGen(options =>

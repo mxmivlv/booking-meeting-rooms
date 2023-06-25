@@ -1,18 +1,32 @@
 ﻿using Notification.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
-using Notification.Infrastructure.Connections.Interfaces;
+using Notification.Infrastructure.Interfaces.Connections;
+using Notification.Infrastructure.Settings.RabbitMQ;
 using RabbitMQ.Client;
-using RabbitMQSettings = Notification.Infrastructure.Settings.RabbitMQ.RabbitMQSettings;
 
 namespace Notification.Infrastructure.Connections;
 
+/// <summary>
+/// Подключение к Rabbit
+/// </summary>
 public class ConnectionRabbit: IConnectionRabbit
 {
     #region Свойства
 
+    /// <summary>
+    /// Канал для пользователей
+    /// </summary>
     public IModel Channel { get; private set; }
     
-    public RabbitMQSettings Settings { get; }
+    /// <summary>
+    /// Канал для администраторов
+    /// </summary>
+    public IModel ChannelAdmin { get; private set; }
+    
+    /// <summary>
+    /// Настройки RabbitMq
+    /// </summary>
+    public RabbitMqSettings Settings { get; }
 
     #endregion
 
@@ -37,6 +51,7 @@ public class ConnectionRabbit: IConnectionRabbit
         var factory = new ConnectionFactory()
         {
             HostName = Settings.ConnectionStringRabbitMQ, 
+            VirtualHost = Settings.VirtualHost,
             UserName = Settings.LoginRabbitMQ, 
             Password = Settings.PasswordRabbitMQ
         };
@@ -44,8 +59,11 @@ public class ConnectionRabbit: IConnectionRabbit
         // Создание подключения
         var connect = factory.CreateConnection();
         
-        // Создание модели
+        // Создание модели для пользователей
         Channel = connect.CreateModel();
+
+        // Создание модели для администраторов
+        ChannelAdmin = connect.CreateModel();
     }
 
     #endregion

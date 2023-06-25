@@ -37,7 +37,12 @@ public class MeetingRoomController: ControllerBase
     [HttpPost]
     public async Task<BookingMeetingRoomDto> BookingMeetingRoomAsync(Guid id, string dateMeeting, string startTimeMeeting, string endTimeMeeting)
     {
-        return await _mediator.Send(new PostBookingMeetingRoomCommand(id, dateMeeting, startTimeMeeting, endTimeMeeting));
+        var bookingMeetingRoomDto = await _mediator.Send(
+            new PostBookingMeetingRoomCommand(id, dateMeeting, startTimeMeeting, endTimeMeeting));
+        
+        await _mediator.Send(new PostBookingNotificationQueries());
+
+        return bookingMeetingRoomDto;
     }
 
     #endregion

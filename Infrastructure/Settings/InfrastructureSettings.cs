@@ -1,10 +1,16 @@
 ﻿using Infrastructure.Settings.RabbitMQ;
 using Infrastructure.Settings.Redis;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Settings;
 
-public class InfrastructureSettings
+/// <summary>
+/// Настройки инфраструктурного слоя
+/// </summary>
+public class InfrastructureSettings: IOptions<InfrastructureSettings>
 {
+    public InfrastructureSettings Value => this;
+    
     /// <summary>
     /// Строка подключения к бд
     /// </summary>
@@ -16,7 +22,7 @@ public class InfrastructureSettings
     public RedisSettings RedisSettings { get; set; }
     
     /// <summary>
-    /// Настройки RabbitMQ
+    /// Настройки RabbitMq
     /// </summary>
-    public RabbitMQSettings RabbitMqSettings { get; set; }
+    public RabbitMqSettings RabbitMqSettings { get; set; }
 }

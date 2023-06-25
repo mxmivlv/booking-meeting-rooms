@@ -1,9 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Notification.Infrastructure.Connections;
-using Notification.Infrastructure.Connections.Interfaces;
+using Notification.Infrastructure.Interfaces.Connections;
 
 namespace Notification.Infrastructure.Extensions;
 
+/// <summary>
+/// Расширение для подключения сервисов Notification.Infrastructure
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
@@ -11,10 +14,11 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddNotificationInfrastructure(this IServiceCollection services)
     {
-        // Подключение
-        services.AddScoped<IConnectionRabbit, ConnectionRabbit>();
+        // Подключение RabbitMq
+        //services.AddScoped<IConnectionRabbit, ConnectionRabbit>();
+        // Подключение Telegram
         services.AddScoped<IConnectionTelegram, ConnectionTelegram>();
-        
+
         return services;
     }
 }

@@ -56,4 +56,9 @@
         - реализовано подключение к telegram.
     7. Notification.Presentation:
         - реализован hostedService для прослушивания шины и отправки в telegram.
-
+Итерация 5.
+    1. Application:
+        - Реализована работа MassTransit.
+    2. Notification.Application:
+        - Реализована работа MassTransit.
+        - Отправка сообщений происходит в канал с администраторами и в личные сообщения.

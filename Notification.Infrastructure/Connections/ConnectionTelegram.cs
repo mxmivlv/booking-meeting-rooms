@@ -1,18 +1,32 @@
 ﻿using Microsoft.Extensions.Options;
-using Notification.Infrastructure.Connections.Interfaces;
+using Notification.Infrastructure.Interfaces.Connections;
 using Notification.Infrastructure.Settings;
 using Notification.Infrastructure.Settings.Telegram;
 using Telegram.Bot;
 
 namespace Notification.Infrastructure.Connections;
 
+/// <summary>
+/// Подключение к Telegram
+/// </summary>
 public class ConnectionTelegram: IConnectionTelegram
 {
     #region Свойства
 
+    /// <summary>
+    /// Настройки Telegram
+    /// </summary>
     public TelegramSettings Settings { get; }
     
-    public TelegramBotClient BotClient { get; }
+    /// <summary>
+    /// Bot администратор
+    /// </summary>
+    public TelegramBotClient BotClientAdmin { get; }
+    
+    /// <summary>
+    /// Bot пользователь
+    /// </summary>
+    public TelegramBotClient BotClientUser { get; }
 
     #endregion
 
@@ -21,7 +35,8 @@ public class ConnectionTelegram: IConnectionTelegram
     public ConnectionTelegram(IOptions<NotificationInfrastructureSettings> settings)
     {
         Settings = settings.Value.TelegramSettings;
-        BotClient = new TelegramBotClient(Settings.Token);
+        BotClientAdmin = new TelegramBotClient(Settings.TokenBotAdmin);
+        BotClientUser = new TelegramBotClient(Settings.TokenBotUser);
     }
 
     #endregion

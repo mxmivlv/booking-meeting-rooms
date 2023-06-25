@@ -3,12 +3,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
+/// <summary>
+/// Доступ к бд
+/// </summary>
 public class Context : DbContext
 {
     #region Свойства
 
+    /// <summary>
+    /// Доступ к комнатам
+    /// </summary>
     public DbSet<MeetingRoom> MeetingRooms { get; set; }
 
+    /// <summary>
+    /// Доступ к бронированию комнат
+    /// </summary>
     public DbSet<BookingMeetingRoom> BookingMeetingRooms { get; set; }
 
     #endregion
@@ -24,17 +33,10 @@ public class Context : DbContext
     #endregion
     
     #region Методы
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql(providerOptions => { providerOptions.EnableRetryOnFailure(); });
-    }
-    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Repository).Assembly);
-        
         //SeedDataBase(modelBuilder);
     }
 

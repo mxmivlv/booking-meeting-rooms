@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configuration;
 
+/// <summary>
+/// Конфигурация бронирования комнат
+/// </summary>
 public class BookingMeetingRoomConfiguration : IEntityTypeConfiguration<BookingMeetingRoom>
 {
     #region Метод

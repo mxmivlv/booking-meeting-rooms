@@ -2,6 +2,9 @@
 
 namespace Domain.Interfaces.Infrastructure;
 
+/// <summary>
+/// Репозиторий
+/// </summary>
 public interface IRepository
 {
     /// <summary>
@@ -24,7 +27,14 @@ public interface IRepository
     /// <summary>
     /// Разбронирование комнат (HostedService)
     /// </summary>
-    public void UnbookingMeetingRoom(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
+    public Task<ICollection<MeetingRoom>> UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
 
+    /// <summary>
+    /// Получения комнат для отправки оповещения
+    /// </summary>
+    /// <param name="currentDateOnly">Текущая дата</param>
+    /// <param name="currentTimeOnly">Текущее время</param>
+    /// <param name="maxTimeOnly">Максимальное время для поиска броней</param>
+    /// <returns>Коллекцию бронирований</returns>
     public ICollection<BookingMeetingRoom> GetRoomsForNotification(DateOnly currentDateOnly, TimeOnly currentTimeOnly, TimeOnly maxTimeOnly);
 }

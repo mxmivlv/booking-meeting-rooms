@@ -1,14 +1,17 @@
-﻿using Notification.Infrastructure.Settings.RabbitMQ;
+﻿using Microsoft.Extensions.Options;
+using Notification.Infrastructure.Settings.RabbitMQ;
 using Notification.Infrastructure.Settings.Telegram;
 
 namespace Notification.Infrastructure.Settings;
 
-public class NotificationInfrastructureSettings
+public class NotificationInfrastructureSettings: IOptions<NotificationInfrastructureSettings>
 {
+    public NotificationInfrastructureSettings Value => this;
+    
     /// <summary>
     /// Настройки RabbitMQ
     /// </summary>
-    public RabbitMQSettings RabbitMqSettings { get; set; }
+    public RabbitMqSettings RabbitMqSettings { get; set; }
     
     /// <summary>
     /// Настройки Telegram

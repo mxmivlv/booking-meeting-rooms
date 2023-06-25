@@ -3,12 +3,17 @@ using Serilog;
 
 namespace Application.Mediatr.Pipelines;
 
+/// <summary>
+/// Pipeline записи логов
+/// </summary>
+/// <typeparam name="TIn">Входной тип данных</typeparam>
+/// <typeparam name="TOut">Тип возвращаемого значения</typeparam>
 public class LoggingPipelineBehaviour<TIn, TOut> : IPipelineBehavior<TIn, TOut> where TIn : IRequest<TOut>
 {
     #region Метод
 
     /// <summary>
-    /// Метод для записи логов
+    /// Запись логов
     /// </summary>
     /// <param name="request">Запрос, который пришел</param>
     /// <param name="next">Метод, который должен выполниться</param>

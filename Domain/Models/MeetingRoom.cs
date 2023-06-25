@@ -1,16 +1,31 @@
 ﻿namespace Domain.Models;
 
+/// <summary>
+/// Комната
+/// </summary>
 public class MeetingRoom
 {
     #region Свойства
 
+    /// <summary>
+    /// Id комнаты
+    /// </summary>
     public Guid IdRoom { get; }
     
+    /// <summary>
+    /// Название комнаты
+    /// </summary>
     public string NameRoom { get; }
     
+    /// <summary>
+    /// Описание комнаты
+    /// </summary>
     public string? DescriptionRoom { get; private set; }
     
-    public List<BookingMeetingRoom> BookingMeetingRooms { get; private set; }
+    /// <summary>
+    /// Расписание комнаты (все брони)
+    /// </summary>
+    public ICollection<BookingMeetingRoom> BookingMeetingRooms { get; private set; }
 
     #endregion
 

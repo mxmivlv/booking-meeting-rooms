@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Presentation.Filters.Exceptions;
 
+/// <summary>
+/// Фильтр для ошибок
+/// </summary>
 public class ExceptionFilter : Attribute, IExceptionFilter
 {
     #region Метод
