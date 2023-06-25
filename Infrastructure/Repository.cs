@@ -1,20 +1,27 @@
-﻿using Domain.Models;
+﻿using System.Collections;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Domain.Interfaces.Infrastructure;
 
 namespace Infrastructure;
 
+/// <summary>
+/// Работа с бд
+/// </summary>
 public class Repository : IRepository
 {
     #region Поле
 
-    private readonly Context _context;
+    /// <summary>
+    /// Доступ к бд
+    /// </summary>
+    private readonly DbContext _context;
 
     #endregion
 
     #region Конструктор
 
-    public Repository(Context context)
+    public Repository(DbContext context)
     {
         _context = context;
     }
@@ -33,7 +40,7 @@ public class Repository : IRepository
     /// <returns>Комнату с данными</returns>
     public async Task<BookingMeetingRoom> BookingMeetingRoomAsync(Guid id, DateOnly dateMeeting, TimeOnly startTimeMeeting, TimeOnly endTimeMeeting)
     {
-        var meetingRoom = await _context.MeetingRooms
+        var meetingRoom = await _context.Set<MeetingRoom>()
                               .Include(e => e.BookingMeetingRooms)
                               .FirstOrDefaultAsync(e => e.IdRoom == id)
                           ?? throw new Exception("комнаты с таким Id нет.");
@@ -50,7 +57,7 @@ public class Repository : IRepository
     /// <returns>Расписание комнаты</returns>
     public async Task<MeetingRoom> GetScheduleAsync(Guid id)
     {
-        var meetingRoom = await _context.MeetingRooms
+        var meetingRoom = await _context.Set<MeetingRoom>()
                               .Include(e => e.BookingMeetingRooms
                                   .OrderBy(e => e.DateMeeting)
                                   .ThenBy(e => e.StartTimeMeeting))
@@ -63,16 +70,19 @@ public class Repository : IRepository
     /// <summary>
     /// Разбронирование комнаты
     /// </summary>
-    public void UnbookingMeetingRoom(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
+    public async Task<ICollection<MeetingRoom>> UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
     {
-        var meetingRooms = _context.MeetingRooms
+        var meetingRooms = await _context.Set<MeetingRoom>()
             .Include(e => e.BookingMeetingRooms)
-            .ToList();
+            .ToListAsync();
 
         foreach (var item in meetingRooms)
         {
+            // Разбронировать комнату
             item.UnbookingRoom(currentDateOnly, currentTimeOnly);
         }
+
+        return meetingRooms;
     }
 
     /// <summary>
@@ -84,12 +94,18 @@ public class Repository : IRepository
     /// <returns>Коллекцию бронирований</returns>
     public ICollection<BookingMeetingRoom> GetRoomsForNotification(DateOnly currentDateOnly, TimeOnly currentTimeOnly, TimeOnly maxTimeOnly)
     {
-        var collectionMeetingRoom =_context.BookingMeetingRooms
+        var collectionMeetingRoom =_context.Set<BookingMeetingRoom>()
             .Where(e => ((e.DateMeeting == currentDateOnly) 
                          && (e.IsNotification == false)
                          && (e.StartTimeMeeting > currentTimeOnly)
                          && (e.StartTimeMeeting <= maxTimeOnly)))
             .ToList();
+
+        foreach (var item in collectionMeetingRoom)
+        {
+            // Поставить true о том, что об этом бронировании оповестили
+            item.SetTrueNotification();
+        }
 
         return collectionMeetingRoom;
     }

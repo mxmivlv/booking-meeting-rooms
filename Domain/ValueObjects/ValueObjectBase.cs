@@ -1,5 +1,9 @@
 ﻿namespace Domain.ValueObjects;
 
+/// <summary>
+/// Базовый класс для valueObject
+/// </summary>
+/// <typeparam name="T">Тип параметризации</typeparam>
 public abstract class ValueObjectBase<T>
 {
     #region Методы, должны имплементировать наследники

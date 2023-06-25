@@ -1,21 +1,25 @@
 ﻿using Application.Mediatr.Interfaces.Commands;
-using Infrastructure;
 using MediatR;
-using Serilog;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Mediatr.Pipelines;
 
+/// <summary>
+/// Pipeline сохранение данных в бд
+/// </summary>
+/// <typeparam name="TIn">Входной тип данных</typeparam>
+/// <typeparam name="TOut">Тип возвращаемого значения</typeparam>
 public class SavingPipelineBehaviour<TIn, TOut> : IPipelineBehavior<TIn, TOut> where TIn : IRequest<TOut>
 {
     #region Поле
 
-    private readonly Context _context;
+    private readonly DbContext _context;
 
     #endregion
 
     #region Конструктор
 
-    public SavingPipelineBehaviour(Context context)
+    public SavingPipelineBehaviour(DbContext context)
     {
         _context = context;
     }
@@ -25,7 +29,7 @@ public class SavingPipelineBehaviour<TIn, TOut> : IPipelineBehavior<TIn, TOut> w
     #region Метод
 
     /// <summary>
-    /// Метод для сохранения данных в бд
+    /// Сохранения данных в бд
     /// </summary>
     /// <param name="request">Запрос, который пришел</param>
     /// <param name="next">Метод, который должен выполниться</param>
@@ -37,7 +41,6 @@ public class SavingPipelineBehaviour<TIn, TOut> : IPipelineBehavior<TIn, TOut> w
         
         if (request is ICommand<TOut>)
         {
-            //Log.Information("Выполняется сохранение в базе данных");
             await _context.SaveChangesAsync();
         }
 

@@ -1,17 +1,25 @@
 ﻿using Application.Interfaces;
-using Application.Mediatr.Features.Models;
 using Domain.Interfaces.Infrastructure;
 using Domain.Models;
-using Infrastructure.Connections.Interfaces;
+using Infrastructure.Interfaces.Connections;
 
 namespace Application.Services;
 
+/// <summary>
+/// Работа с комнатами, использует блокировку Redis
+/// </summary>
 public class RoomService: IRoomService
 {
     #region Поля
 
+    /// <summary>
+    /// Репозиторий
+    /// </summary>
     private readonly IRepository _repository;
 
+    /// <summary>
+    /// Подключение к Redis
+    /// </summary>
     private readonly IConnectionRedis _connect;
 
     #endregion
@@ -27,13 +35,16 @@ public class RoomService: IRoomService
     #endregion
 
     #region Методы
-
+    
     /// <summary>
     /// Бронирование комнаты
     /// </summary>
-    /// <param name="command">Запрос</param>
-    /// <returns>Комнату, которую забронировали</returns>
-    public async Task<BookingMeetingRoom> BookingRoomAsync(PostBookingMeetingRoomCommand command)
+    /// <param name="idRoom">Id комнаты</param>
+    /// <param name="dateMeeting">Дата бронирования</param>
+    /// <param name="startTimeMeeting">Время начала бронирования</param>
+    /// <param name="endTimeMeeting">Время конца бронирования</param>
+    /// <returns>Информацию о бронировании</returns>
+    public async Task<BookingMeetingRoom> BookingRoomAsync(Guid idRoom, DateOnly dateMeeting, TimeOnly startTimeMeeting, TimeOnly endTimeMeeting)
     {
         // Максимальное время блокировки при сбое
         var expiry = TimeSpan.FromSeconds(30);
@@ -44,21 +55,17 @@ public class RoomService: IRoomService
         // Попытки получить доступ
         var retry = TimeSpan.FromSeconds(1);
         
-        await using (var redLock = await _connect.RedLockFactory.CreateLockAsync(_connect.Settings.ConnectionStringRedis, expiry, wait, retry))
+        await using (var redLock = await _connect.RedLockFactory.CreateLockAsync(_connect.Settings.ConnectionString, expiry, wait, retry))
         {
             if (redLock.IsAcquired)
             {
-                var tempDateMeeting = DateOnly.Parse(command.DateMeeting);
-                var tempStartTimeMeeting = TimeOnly.Parse(command.StartTimeMeeting);
-                var tempEndTimeMeeting = TimeOnly.Parse(command.EndTimeMeeting);
-            
                 var bookingMeetingRoom = 
                     await _repository.BookingMeetingRoomAsync
                         (
-                            command.Id, 
-                            tempDateMeeting, 
-                            tempStartTimeMeeting, 
-                            tempEndTimeMeeting
+                            idRoom, 
+                            dateMeeting, 
+                            startTimeMeeting, 
+                            endTimeMeeting
                         );
 
                 return bookingMeetingRoom;
@@ -84,7 +91,7 @@ public class RoomService: IRoomService
         // Попытки получить доступ
         var retry = TimeSpan.FromSeconds(1);
         
-        await using (var redLock = await _connect.RedLockFactory.CreateLockAsync(_connect.Settings.ConnectionStringRedis, expiry, wait, retry))
+        await using (var redLock = await _connect.RedLockFactory.CreateLockAsync(_connect.Settings.ConnectionString, expiry, wait, retry))
         {
             if (redLock.IsAcquired)
             {
@@ -93,7 +100,7 @@ public class RoomService: IRoomService
                 // Получить текущее время
                 var currentTimeOnly = TimeOnly.FromDateTime(DateTime.Now);
         
-                _repository.UnbookingMeetingRoom(currentDateOnly, currentTimeOnly);
+                await _repository.UnbookingMeetingRoomAsync(currentDateOnly, currentTimeOnly);
             }
             else
             {

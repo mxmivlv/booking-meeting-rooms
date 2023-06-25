@@ -47,17 +47,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("MeetingRoomId");
 
                     b.ToTable("BookingMeetingRooms");
-
-                    b.HasData(
-                        new
-                        {
-                            IdBooking = new Guid("f834bef5-765d-44fa-802a-c5ece9fdbc3b"),
-                            DateMeeting = new DateOnly(2023, 10, 25),
-                            EndTimeMeeting = new TimeOnly(11, 0, 0),
-                            IsNotification = false,
-                            MeetingRoomId = new Guid("854c1574-848d-4298-8b60-da581e9a3ea0"),
-                            StartTimeMeeting = new TimeOnly(10, 0, 0)
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.MeetingRoom", b =>
@@ -80,38 +69,6 @@ namespace Infrastructure.Migrations
                         .HasDatabaseName("NameIndex");
 
                     b.ToTable("MeetingRooms");
-
-                    b.HasData(
-                        new
-                        {
-                            IdRoom = new Guid("854c1574-848d-4298-8b60-da581e9a3ea0"),
-                            DescriptionRoom = "Описание переговорной комнаты.",
-                            NameRoom = "Переговорная комната 1."
-                        },
-                        new
-                        {
-                            IdRoom = new Guid("6b72218d-afb6-42a5-bb1a-e538286158ba"),
-                            DescriptionRoom = "Описание переговорной комнаты.",
-                            NameRoom = "Переговорная комната 2."
-                        },
-                        new
-                        {
-                            IdRoom = new Guid("7cff61ab-3925-491f-9f5a-7c941854c5e4"),
-                            DescriptionRoom = "Описание переговорной комнаты.",
-                            NameRoom = "Переговорная комната 3."
-                        },
-                        new
-                        {
-                            IdRoom = new Guid("f5d3d181-48f3-48cf-8090-5275aa805670"),
-                            DescriptionRoom = "Описание переговорной комнаты.",
-                            NameRoom = "Переговорная комната 4."
-                        },
-                        new
-                        {
-                            IdRoom = new Guid("9fae408a-37f0-41de-8840-e4b461b0bd64"),
-                            DescriptionRoom = "Описание переговорной комнаты.",
-                            NameRoom = "Переговорная комната 5."
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.BookingMeetingRoom", b =>

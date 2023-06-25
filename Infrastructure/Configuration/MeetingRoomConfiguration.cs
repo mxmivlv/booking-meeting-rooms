@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configuration;
 
+/// <summary>
+/// Конфигурация комнаты
+/// </summary>
 public class MeetingRoomConfiguration : IEntityTypeConfiguration<MeetingRoom>
 {
     #region Метод
@@ -20,7 +23,6 @@ public class MeetingRoomConfiguration : IEntityTypeConfiguration<MeetingRoom>
             .IsUnique();
         builder.Property(q => q.NameRoom)
             .IsRequired();
-        
         
         builder.Property(q => q.DescriptionRoom)
             .HasMaxLength(50);

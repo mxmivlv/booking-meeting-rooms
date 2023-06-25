@@ -1,14 +1,20 @@
 ﻿using Notification.Application.Interfaces;
-using Notification.Infrastructure.Connections.Interfaces;
+using Notification.Infrastructure.Interfaces.Connections;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Notification.Application.Services;
 
-public class NotificationTelegramService: INotificationService
+/// <summary>
+/// Сервис для отправки сообщений в телеграм
+/// </summary>
+public class NotificationTelegramService: INotification
 {
      #region Поле
 
+     /// <summary>
+     /// Подключение к Telegram
+     /// </summary>
      private readonly IConnectionTelegram _connection;
 
      #endregion
@@ -18,7 +24,7 @@ public class NotificationTelegramService: INotificationService
      public NotificationTelegramService(IConnectionTelegram connection)
      {
          _connection = connection;
-         _connection.BotClient.StartReceiving(UpdateBotAsync, ExceptionBotAsync);
+         _connection.BotClientUser.StartReceiving(UpdateBotAsync, ExceptionBotAsync);
      }
      
      #endregion
@@ -29,14 +35,15 @@ public class NotificationTelegramService: INotificationService
      /// Отправить сообщение с помощью бота
      /// </summary>
      /// <param name="message">Сообщение</param>
-     public async Task SendMessage(string message)
+     public async Task SendMessage(string message, long idChat)
      {
          if (message != null)
          {
-             await _connection.BotClient.SendTextMessageAsync(_connection.Settings.IdChat, message);
+             await _connection.BotClientUser.SendTextMessageAsync(idChat, message);
+             
          }
      }
-     
+
      /// <summary>
      /// В автоматическом режиме получает сообщения, обрабатывает их
      /// </summary>

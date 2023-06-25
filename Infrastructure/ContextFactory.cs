@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure;
 
+/// <summary>
+/// Класс для миграции
+/// </summary>
 public class ContextFactory: IDesignTimeDbContextFactory<Context>
 {
     public Context CreateDbContext(string[] args)

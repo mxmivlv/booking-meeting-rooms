@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Mediatr.Features.Models;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
 
@@ -6,6 +8,7 @@ namespace Presentation.Controllers;
 [Route("api/[controller]/[action]")]
 public class TestController: ControllerBase
 {
+
     #region Поля
 
     
@@ -14,19 +17,20 @@ public class TestController: ControllerBase
 
     #region Конструктор
 
-    public TestController() { }
+    public TestController()
+    {
+
+    }
 
     #endregion
 
     #region Api - методы
 
     [HttpPost]
-    public IActionResult TestMethod(string message)
+    public async Task<IActionResult> TestMethod(string message)
     {
-        return Ok("Функционала для тестирования нет.");
+        return Ok("7c0a2d75-b56b-4473-9cc5-e76e9591cc6d");
     }
 
     #endregion
-    
-    
 }

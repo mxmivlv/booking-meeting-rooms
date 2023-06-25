@@ -3,19 +3,25 @@ using Application.Models.Dto;
 
 namespace Application.Mediatr.Features.Models;
 
+/// <summary>
+/// Запрос на получение расписания комнаты
+/// </summary>
 public class GetScheduleSpecificRoomQueries : IQuery<MeetingRoomDto>
 {
     #region Свойства
 
-    public Guid Id { get; }
+    /// <summary>
+    /// Id комнаты
+    /// </summary>
+    public Guid IdRoom { get; }
 
     #endregion
 
     #region Конструктор
 
-    public GetScheduleSpecificRoomQueries(Guid id)
+    public GetScheduleSpecificRoomQueries(Guid idRoom)
     {
-        Id = id;
+        IdRoom = idRoom;
     }
 
     #endregion
