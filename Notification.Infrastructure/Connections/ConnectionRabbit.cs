@@ -17,12 +17,7 @@ public class ConnectionRabbit: IConnectionRabbit
     /// Канал для пользователей
     /// </summary>
     public IModel Channel { get; private set; }
-    
-    /// <summary>
-    /// Канал для администраторов
-    /// </summary>
-    public IModel ChannelAdmin { get; private set; }
-    
+
     /// <summary>
     /// Настройки RabbitMq
     /// </summary>
@@ -61,9 +56,6 @@ public class ConnectionRabbit: IConnectionRabbit
         
         // Создание модели для пользователей
         Channel = connect.CreateModel();
-
-        // Создание модели для администраторов
-        ChannelAdmin = connect.CreateModel();
     }
 
     #endregion

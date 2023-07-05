@@ -19,14 +19,9 @@ public class ConnectionTelegram: IConnectionTelegram
     public TelegramSettings Settings { get; }
     
     /// <summary>
-    /// Bot администратор
+    /// Чат бот
     /// </summary>
-    public TelegramBotClient BotClientAdmin { get; }
-    
-    /// <summary>
-    /// Bot пользователь
-    /// </summary>
-    public TelegramBotClient BotClientUser { get; }
+    public TelegramBotClient BotClient { get; }
 
     #endregion
 
@@ -35,8 +30,7 @@ public class ConnectionTelegram: IConnectionTelegram
     public ConnectionTelegram(IOptions<NotificationInfrastructureSettings> settings)
     {
         Settings = settings.Value.TelegramSettings;
-        BotClientAdmin = new TelegramBotClient(Settings.TokenBotAdmin);
-        BotClientUser = new TelegramBotClient(Settings.TokenBotUser);
+        BotClient = new TelegramBotClient(Settings.TokenBot);
     }
 
     #endregion

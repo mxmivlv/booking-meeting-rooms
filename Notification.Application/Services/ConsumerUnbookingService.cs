@@ -12,15 +12,15 @@ public class ConsumerUnbookingService: IConsumer<MessageUnbooking>
     #region Поле
 
     /// <summary>
-    /// Сервис для отправки уведомлений
+    /// Сервис для отправки уведомлений пользователям
     /// </summary>
-    private readonly IAdminNotification _notification;
+    private readonly INotification _notification;
 
     #endregion
 
     #region Конструктор
 
-    public ConsumerUnbookingService(IAdminNotification notification)
+    public ConsumerUnbookingService(INotification notification)
     {
         _notification = notification;
     }
@@ -36,8 +36,8 @@ public class ConsumerUnbookingService: IConsumer<MessageUnbooking>
     public Task Consume(ConsumeContext<MessageUnbooking> context)
     {
         var message = context.Message;
-        _notification.SendMessage(message.Text);
-        
+        _notification.SendMessage(message.Text, message.IdChat);
+
         return Task.CompletedTask;
     }
 

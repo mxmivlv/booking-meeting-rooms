@@ -62,3 +62,19 @@
     2. Notification.Application:
         - Реализована работа MassTransit.
         - Отправка сообщений происходит в канал с администраторами и в личные сообщения.
+Итерация 6.
+    1. Infrastructure:
+        - Реализовано подключение к Kafka.
+        - Реализованы HealthCheck для шин, бд.
+    2. Application:
+        - Реализована отправка сообщений в шину Kafka.
+        - Реализованы метрики OpenTelemetry в Prometheus.
+        - Реализованы трассировки в Jaeger.
+        - Реализован функционал по логированию в Elastic и Kibana.
+        - Реализованы HealthCheckUI для просмотра.
+    3. Notification.Infrastructure
+        - Реализовано подключение к Kafka.
+    4. Notification.Application:
+        - Реализовано получение сообщений из шины Kafka и отправка в телеграм.
+
+*Все доп сервисы подняты локально в докере, кроме Prometheus и Kafka(подключение к Confluent Cloud)

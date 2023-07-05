@@ -40,7 +40,7 @@ public class PostBookingNotificationHandler: IQueryHandler<PostBookingNotificati
     public async Task<Unit> Handle(PostBookingNotificationQueries queries, CancellationToken cancellationToken)
     {
         var messageBooking = new MessageBooking();
-        await _publishBusService.SendMessageUserAsync(messageBooking);
+        await _publishBusService.SendMessageAsync(messageBooking);
         
         return await Unit.Task;
     }

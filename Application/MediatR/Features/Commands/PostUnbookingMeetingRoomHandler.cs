@@ -51,7 +51,7 @@ public class PostUnbookingMeetingRoomHandler: ICommandHandler<PostUnbookingMeeti
         // Логику нужно переделать, прежде, чем удалять бронирование, нужно достать все данные и их положить в сообщение
         // Для администраторов. Сейчас просто происходит удаление броней.
         var message = new MessageUnbooking();
-        await _publishBusService.SendMessageAdminAsync(message);
+        await _publishBusService.SendMessageAsync(message);
 
         return await Unit.Task;
     }

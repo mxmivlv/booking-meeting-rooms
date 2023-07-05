@@ -9,14 +9,8 @@ namespace Application.Interfaces;
 public interface IPublishBusService<T> where T: IMessage
 {
     /// <summary>
-    /// Отправка сообщений в очередь для пользователей
+    /// Отправка сообщений в очередь
     /// </summary>
     /// <param name="classMessage">Класс - сообщение</param>
-    public Task SendMessageUserAsync(T classMessage);
-
-    /// <summary>
-    /// Отправка сообщений в очередь для администраторов
-    /// </summary>
-    /// <param name="classMessage">Класс - сообщение</param>
-    public Task SendMessageAdminAsync(T classMessage);
+    public Task SendMessageAsync(T classMessage);
 }

@@ -10,7 +10,7 @@ public class TestController: ControllerBase
 {
 
     #region Поля
-
+    
     
 
     #endregion
@@ -19,7 +19,7 @@ public class TestController: ControllerBase
 
     public TestController()
     {
-
+        
     }
 
     #endregion

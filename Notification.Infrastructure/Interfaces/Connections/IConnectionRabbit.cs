@@ -12,11 +12,6 @@ public interface IConnectionRabbit
     /// Канал к которому подключен Rabbit, для пользователей
     /// </summary>
     public IModel Channel { get; }
-    
-    /// <summary>
-    /// Канал к которому подключен Rabbit, для администраторов
-    /// </summary>
-    public IModel ChannelAdmin { get; }
 
     /// <summary>
     /// Настройки Rabbit

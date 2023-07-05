@@ -17,13 +17,7 @@ public class ConnectionRabbitMq: IConnectionRabbitMq
     /// Канал к которому было создано подключение
     /// </summary>
     public IModel Channel { get; private set; }
-    
-    /// <summary>
-    /// Канал к которому было создано подключение
-    /// </summary>
-    public IModel ChannelAdmin { get; private set; }
-    
-    
+
     /// <summary>
     /// Настройки RabbitMq
     /// </summary>
@@ -62,8 +56,6 @@ public class ConnectionRabbitMq: IConnectionRabbitMq
         
         // Создание модели
         Channel = connect.CreateModel();
-
-        ChannelAdmin = connect.CreateModel();
     }
 
     #endregion

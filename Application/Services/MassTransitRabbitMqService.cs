@@ -41,7 +41,7 @@ public class MassTransitRabbitMqService<T>: IPublishBusService<T> where T: IMess
     /// Отправка сообщений в очередь для пользователей
     /// </summary>
     /// <param name="classMessage">Класс - сообщение</param>
-    public async Task SendMessageUserAsync(T classMessage)
+    public async Task SendMessageAsync(T classMessage)
     {
         var endPoint = await _bus.GetSendEndpoint
         (
@@ -49,24 +49,7 @@ public class MassTransitRabbitMqService<T>: IPublishBusService<T> where T: IMess
                 
                 _settings.RabbitMqSettings.NameProvider}://{
                 _settings.RabbitMqSettings.ConnectionString}/{
-                _settings.RabbitMqSettings.QueueUser}")
-        );
-        
-        await endPoint.Send(classMessage);
-    }
-    
-    /// <summary>
-    /// Отправка сообщений в очередь для администраторов
-    /// </summary>
-    /// <param name="classMessage">Класс - сообщение</param>
-    public async Task SendMessageAdminAsync(T classMessage)
-    {
-        var endPoint = await _bus.GetSendEndpoint
-        (
-            new Uri($"{
-                _settings.RabbitMqSettings.NameProvider}://{
-                _settings.RabbitMqSettings.ConnectionString}/{
-                _settings.RabbitMqSettings.QueueAdmin}")
+                _settings.RabbitMqSettings.Queue}")
         );
         
         await endPoint.Send(classMessage);

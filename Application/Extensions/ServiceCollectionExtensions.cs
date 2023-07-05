@@ -22,9 +22,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRoomService, RoomService>();
         
         // Сервис для отправки оповещения, RebbitMQ
-        //services.AddScoped<IPublishBusService<IMessage>, RabbitMqService>();
+        //services.AddScoped<IPublishBusService<IMessage>, RabbitMqService<IMessage>>();
         // Сервис для отправки оповещения, MassTransit
-        services.AddScoped<IPublishBusService<IMessage>, MassTransitRabbitMqService<IMessage>>();
+        //services.AddScoped<IPublishBusService<IMessage>, MassTransitRabbitMqService<IMessage>>();
+        // Сервис для отправки оповещения, Kafka
+        services.AddScoped<IPublishBusService<IMessage>, KafkaService<IMessage>>();
         
         // AutoMapper
         services.AddAutoMapper(typeof(MeetingRoomProfileMapping));

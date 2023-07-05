@@ -25,7 +25,7 @@ public class NotificationHostedService: BackgroundService
     #region Метод
 
     /// <summary>
-    /// Метод для отправки уведомлений
+    /// Получение новых сообщений из шины
     /// </summary>
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
@@ -33,8 +33,8 @@ public class NotificationHostedService: BackgroundService
         {
             using (IServiceScope scope = _serviceProvider.CreateScope())
             {
-                var notification = scope.ServiceProvider.GetRequiredService<IConsumerBus>();
-                notification.Listen();
+                var consumer = scope.ServiceProvider.GetRequiredService<IConsumerBus>();
+                consumer.Listen();
             }
             await Task.Delay(TimeSpan.FromSeconds(10));
         }

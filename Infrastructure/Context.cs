@@ -29,7 +29,7 @@ public class Context : DbContext
     /// </summary>
     /// <param name="options">Строка подключения</param>
     public Context(DbContextOptions<Context> options) : base(options) { }
-    
+
     #endregion
     
     #region Методы

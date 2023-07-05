@@ -1,4 +1,5 @@
-﻿using Infrastructure.Settings.RabbitMQ;
+﻿using Infrastructure.Settings.Kafka;
+using Infrastructure.Settings.RabbitMQ;
 using Infrastructure.Settings.Redis;
 using Microsoft.Extensions.Options;
 
@@ -25,4 +26,9 @@ public class InfrastructureSettings: IOptions<InfrastructureSettings>
     /// Настройки RabbitMq
     /// </summary>
     public RabbitMqSettings RabbitMqSettings { get; set; }
+    
+    /// <summary>
+    /// Настройки Kafka
+    /// </summary>
+    public KafkaSettings KafkaSettings { get; set; }
 }

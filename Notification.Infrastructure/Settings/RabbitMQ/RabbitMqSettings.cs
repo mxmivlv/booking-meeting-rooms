@@ -28,10 +28,5 @@ public class RabbitMqSettings
     /// <summary>
     /// Название очереди RabbitMQ, для пользователей
     /// </summary>
-    public string QueueUser { get; set; }
-    
-    /// <summary>
-    /// Название очереди RabbitMQ, для администраторов
-    /// </summary>
-    public string QueueAdmin { get; set; }
+    public string Queue { get; set; }
 }
