@@ -9,15 +9,10 @@ namespace Notification.Infrastructure.Interfaces.Connections;
 public interface IConnectionTelegram
 {
     /// <summary>
-    /// Bot Telegram, для администраторов 
+    /// Bot Telegram 
     /// </summary>
-    public TelegramBotClient BotClientAdmin { get; }
-    
-    /// <summary>
-    /// Bot Telegram, для пользователей
-    /// </summary>
-    public TelegramBotClient BotClientUser { get; }
-    
+    public TelegramBotClient BotClient { get; }
+
     /// <summary>
     /// Настройки Telegram
     /// </summary>

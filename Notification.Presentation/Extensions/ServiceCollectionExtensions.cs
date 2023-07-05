@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Notification.Application.Services;
 using Notification.Infrastructure.Settings;
+using Notification.Presentation.Services;
 
 namespace Notification.Presentation.Extensions;
 
@@ -15,10 +16,10 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddNotificationPresentation(this IServiceCollection services, NotificationInfrastructureSettings settings)
     {
         // Для работы RabbitMq
-        //services.AddHostedService<NotificationHostedService>();
+        services.AddHostedService<NotificationHostedService>();
 
         // Работа с помощью MassTransit
-        services.AddMassTransit(settings);
+        //services.AddMassTransit(settings);
         
         services.AddControllers();
         services.AddEndpointsApiExplorer();
@@ -51,17 +52,12 @@ public static class ServiceCollectionExtensions
                     options.Username(settings.RabbitMqSettings.LoginRabbitMQ);
                     options.Password(settings.RabbitMqSettings.PasswordRabbitMQ);
                 });
-                config.ReceiveEndpoint(settings.RabbitMqSettings.QueueUser, ep =>
+                config.ReceiveEndpoint(settings.RabbitMqSettings.Queue, ep =>
                 {
                     ep.PrefetchCount = 16;
                     ep.UseMessageRetry(r => r.Interval(2, 100));
                     ep.ConfigureConsumer<ConsumerReminderService>(context);
                     ep.ConfigureConsumer<ConsumerBookingService>(context);
-                });
-                config.ReceiveEndpoint(settings.RabbitMqSettings.QueueAdmin, ep =>
-                {
-                    ep.PrefetchCount = 16;
-                    ep.UseMessageRetry(r => r.Interval(2, 100));
                     ep.ConfigureConsumer<ConsumerUnbookingService>(context);
                 });
             });

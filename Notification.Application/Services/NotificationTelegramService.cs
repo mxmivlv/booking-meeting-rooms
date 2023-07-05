@@ -24,7 +24,7 @@ public class NotificationTelegramService: INotification
      public NotificationTelegramService(IConnectionTelegram connection)
      {
          _connection = connection;
-         _connection.BotClientUser.StartReceiving(UpdateBotAsync, ExceptionBotAsync);
+         _connection.BotClient.StartReceiving(UpdateBotAsync, ExceptionBotAsync);
      }
      
      #endregion
@@ -39,8 +39,7 @@ public class NotificationTelegramService: INotification
      {
          if (message != null)
          {
-             await _connection.BotClientUser.SendTextMessageAsync(idChat, message);
-             
+             await _connection.BotClient.SendTextMessageAsync(idChat, message);
          }
      }
 

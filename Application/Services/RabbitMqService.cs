@@ -10,7 +10,7 @@ namespace Application.Services;
 /// <summary>
 /// Сервис для отправки сообщений в шину с помощью RabbitMq
 /// </summary>
-public class RabbitMqService: IPublishBusService<IMessage>
+public class RabbitMqService<T>: IPublishBusService<T> where T: IMessage
 {
     #region Поле
     
@@ -33,10 +33,10 @@ public class RabbitMqService: IPublishBusService<IMessage>
     #region Методы
 
     /// <summary>
-    /// Отправка сообщений в очередь для пользователей
+    /// Отправка сообщений в очередь
     /// </summary>
     /// <param name="classMessage">Класс - сообщение</param>
-    public async Task SendMessageUserAsync(IMessage classMessage)
+    public async Task SendMessageAsync(T classMessage)
     {
         await Task.Run(() =>
         {
@@ -44,7 +44,7 @@ public class RabbitMqService: IPublishBusService<IMessage>
 
             _connectRabbit.Channel.QueueDeclare
             (
-                queue: _connectRabbit.Settings.QueueUser,
+                queue: _connectRabbit.Settings.Queue,
                 durable: true,
                 exclusive: false,
                 autoDelete: false,
@@ -58,40 +58,7 @@ public class RabbitMqService: IPublishBusService<IMessage>
             _connectRabbit.Channel.BasicPublish
             (
                 exchange: "",
-                routingKey: _connectRabbit.Settings.QueueUser,
-                basicProperties: null,
-                body: body
-            );
-        });
-    }
-    
-    /// <summary>
-    /// Отправка сообщений в очередь для администраторов
-    /// </summary>
-    /// <param name="classMessage">Класс - сообщение</param>
-    public async Task SendMessageAdminAsync(IMessage classMessage)
-    {
-        await Task.Run(() =>
-        {
-            var tempString = JsonConvert.SerializeObject(classMessage);
-
-            _connectRabbit.ChannelAdmin.QueueDeclare
-            (
-                queue: _connectRabbit.Settings.QueueAdmin,
-                durable: true,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null
-            );
-
-            // Создание массива байтов из строки
-            var body =  Encoding.UTF8.GetBytes(tempString);
-
-            // Отправка сообщения
-            _connectRabbit.ChannelAdmin.BasicPublish
-            (
-                exchange: "",
-                routingKey: _connectRabbit.Settings.QueueAdmin,
+                routingKey: _connectRabbit.Settings.Queue,
                 basicProperties: null,
                 body: body
             );

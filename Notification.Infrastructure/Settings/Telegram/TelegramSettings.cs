@@ -6,17 +6,7 @@
 public class TelegramSettings
 {
     /// <summary>
-    /// Токен для подключения к чату пользователей
+    /// Токен для подключения к боту
     /// </summary>
-    public string TokenBotUser { get; set; }
-    
-    /// <summary>
-    /// Токен для подключения к чату администратора
-    /// </summary>
-    public string TokenBotAdmin { get; set; }
-    
-    /// <summary>
-    /// Id канала с администраторами
-    /// </summary>
-    public long AdminsChannel { get; set; }
+    public string TokenBot { get; set; }
 }

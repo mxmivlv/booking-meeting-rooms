@@ -59,7 +59,7 @@ public class PostReminderNotificationHandler: ICommandHandler<PostReminderNotifi
         {
             // Достать данные из бд и создать конкретный тип сообщения с id чата клиента из бд для отправки сообщения
             var message = new MessageReminder();
-            await _publishBusService.SendMessageUserAsync(message);
+            await _publishBusService.SendMessageAsync(message);
         }
 
         return await Unit.Task;

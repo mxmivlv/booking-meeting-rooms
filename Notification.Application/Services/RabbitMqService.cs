@@ -20,24 +20,18 @@ public class RabbitMqService: IConsumerBus
     private readonly IConnectionRabbit _connect;
 
     /// <summary>
-    /// Отправка уведомлений для пользователей
+    /// Отправка уведомлений
     /// </summary>
     private readonly INotification _notification;
-
-    /// <summary>
-    /// Отправка уведомлений администраторам
-    /// </summary>
-    private readonly IAdminNotification _adminNotification;
-
+    
     #endregion
 
     #region Конструктор
 
-    public RabbitMqService(IConnectionRabbit connect, INotification notification, IAdminNotification adminNotification)
+    public RabbitMqService(IConnectionRabbit connect, INotification notification)
     {
         _connect = connect;
         _notification = notification;
-        _adminNotification = adminNotification;
     }
 
     #endregion
@@ -49,19 +43,10 @@ public class RabbitMqService: IConsumerBus
     /// </summary>
     public void Listen()
     {
-        ListenUserBus();
-        ListenAdminBus();
-    }
-    
-    /// <summary>
-    /// Получить сообщения из шины пользователей
-    /// </summary>
-    private void ListenUserBus()
-    {
         // Подключиться к каналу пользователей
         _connect.Channel.QueueDeclare
         (
-            queue: _connect.Settings.QueueUser,
+            queue: _connect.Settings.Queue,
             durable: true,
             exclusive: false,
             autoDelete: false,
@@ -87,57 +72,13 @@ public class RabbitMqService: IConsumerBus
 
         _connect.Channel.BasicConsume
         (
-            queue: _connect.Settings.QueueUser,
+            queue: _connect.Settings.Queue,
             autoAck: false,
             consumerTag: "",
             noLocal: false,
             exclusive: false,
             arguments: null,
             consumer: consumer
-        );
-    }
-    
-    /// <summary>
-    /// Получить сообщения из шины администраторов
-    /// </summary>
-    private void ListenAdminBus()
-    {
-        // Подключиться к каналу с администраторами
-        _connect.ChannelAdmin.QueueDeclare
-        (
-            queue: _connect.Settings.QueueAdmin,
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null
-        );
-
-        // Создать слушателя
-        var consumerAdmin = new EventingBasicConsumer(_connect.ChannelAdmin);
-
-        // Получить новые сообщения
-        consumerAdmin.Received += (ch, ea) =>
-        {
-            // Конвертировать сообщения в строку
-            var content = Encoding.UTF8.GetString(ea.Body.ToArray());
-
-            var message = JsonConvert.DeserializeObject<BaseMessage>(content);
-            
-            // Отправить сообщение в телеграм
-            _adminNotification.SendMessage(message.Text);
-
-            _connect.ChannelAdmin.BasicAck(ea.DeliveryTag, false);
-        };
-
-        _connect.ChannelAdmin.BasicConsume
-        (
-            queue: _connect.Settings.QueueAdmin,
-            autoAck: false,
-            consumerTag: "",
-            noLocal: false,
-            exclusive: false,
-            arguments: null,
-            consumer: consumerAdmin
         );
     }
 

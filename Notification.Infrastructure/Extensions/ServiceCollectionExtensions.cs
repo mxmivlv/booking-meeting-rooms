@@ -15,7 +15,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddNotificationInfrastructure(this IServiceCollection services)
     {
         // Подключение RabbitMq
-        //services.AddScoped<IConnectionRabbit, ConnectionRabbit>();
+        services.AddScoped<IConnectionRabbit, ConnectionRabbit>();
+        // Подключение Kafka
+        services.AddScoped<IConnectionKafka, ConnectionKafka>();
         // Подключение Telegram
         services.AddScoped<IConnectionTelegram, ConnectionTelegram>();
 

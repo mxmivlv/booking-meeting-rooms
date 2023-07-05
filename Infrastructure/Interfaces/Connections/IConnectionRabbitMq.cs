@@ -12,8 +12,6 @@ public interface IConnectionRabbitMq
     /// Канал к которому было создано подключение
     /// </summary>
     public IModel Channel { get; }
-    
-    public IModel ChannelAdmin { get; }
 
     /// <summary>
     /// Настройки Rabbit

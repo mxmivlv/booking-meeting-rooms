@@ -6,7 +6,7 @@
 public interface INotification
 {
     /// <summary>
-    /// Отправка оповещения для пользователя
+    /// Отправка оповещения
     /// </summary>
     /// <param name="message">Текст сообщения</param>
     /// <param name="idChat">Id чата пользователя</param>

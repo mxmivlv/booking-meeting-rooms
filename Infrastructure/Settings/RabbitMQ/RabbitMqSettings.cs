@@ -11,6 +11,11 @@ public class RabbitMqSettings
     public string ConnectionString { get; set; }
     
     /// <summary>
+    /// Подключение к RabbitMq с помощью amqp
+    /// </summary>
+    public string ConnectionAmqp { get; set; }
+    
+    /// <summary>
     /// Наименование провайдера
     /// </summary>
     public string NameProvider { get; set; }
@@ -31,12 +36,7 @@ public class RabbitMqSettings
     public string Login { get; set; }
     
     /// <summary>
-    /// Название очереди RabbitMq, для администраторов
+    /// Название очереди RabbitMq
     /// </summary>
-    public string QueueAdmin { get; set; }
-    
-    /// <summary>
-    /// Название очереди RabbitMq, для пользователей
-    /// </summary>
-    public string QueueUser { get; set; }
+    public string Queue { get; set; }
 }
