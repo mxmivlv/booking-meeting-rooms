@@ -10,5 +10,8 @@ public interface IConnectionKafka
     /// </summary>
     public KafkaSettings Settings { get; }
     
+    /// <summary>
+    /// Продюсер
+    /// </summary>
     public IProducer<Null, string> Producer { get; }
 }

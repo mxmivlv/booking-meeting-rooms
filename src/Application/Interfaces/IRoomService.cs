@@ -15,11 +15,12 @@ public interface IRoomService
     /// <param name="dateMeeting">На какую дату забронировать</param>
     /// <param name="startTimeMeeting">Время начала бронирования</param>
     /// <param name="endTimeMeeting">Время конца бронирования</param>
-    /// <returns>Данные о бронировании</returns>
+    /// <returns>Информацию о бронировании</returns>
     public Task<BookingMeetingRoom> BookingRoomAsync(Guid idRoom, DateOnly dateMeeting, TimeOnly startTimeMeeting, TimeOnly endTimeMeeting);
 
     /// <summary>
-    /// Разбронирование комнаты (HostedService)
+    /// Разбронирование комнат
     /// </summary>
-    public Task UnbookingRoomAsync();
+    /// <returns>Коллекция комнат, которую разбронировали</returns>
+    public Task<List<BookingMeetingRoom>> UnbookingRoomAsync();
 }

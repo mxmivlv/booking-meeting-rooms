@@ -45,19 +45,22 @@ public class PostUnbookingMeetingRoomHandler: ICommandHandler<PostUnbookingMeeti
     /// <param name="cancellationToken">Токен</param>
     public async Task<Unit> Handle(PostUnbookingMeetingRoomCommand command, CancellationToken cancellationToken)
     {
-        await _roomService.UnbookingRoomAsync();
-        
-        // Отправка сообщений в телеграм с администраторами о том, что были разблокированны комнаты.
-        // Логику нужно переделать, прежде, чем удалять бронирование, нужно достать все данные и их положить в сообщение
-        // Для администраторов. Сейчас просто происходит удаление броней.
-        var message = new MessageNotification
-        (
-            -1001961900437,
-            "Комната разбронирована",
-            "Дополнительное описание"
-        );
-        await _publishBusService.SendMessageAsync(message);
+        // Коллекция комнат для оповещения о разбронировании
+        var collectionBooking = await _roomService.UnbookingRoomAsync();
 
+        for (int i = 0; i < collectionBooking.Count; i++)
+        {
+            var message = new MessageNotification
+            (
+                -1001961900437,
+                "Комната разбронирована. \n " +
+                $"Id комнаты: {collectionBooking[i].MeetingRoomId}.\n " +
+                $"Дата: {collectionBooking[i].DateMeeting}.\n " +
+                $"Время: {collectionBooking[i].StartTimeMeeting} - {collectionBooking[i].EndTimeMeeting}."
+            );
+            await _publishBusService.SendMessageAsync(message);
+        }
+        
         return await Unit.Task;
     }
 

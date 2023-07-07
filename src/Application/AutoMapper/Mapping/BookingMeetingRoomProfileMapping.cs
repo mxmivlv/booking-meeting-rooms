@@ -5,10 +5,13 @@ using Domain.Models;
 namespace Application.AutoMapper.Mapping;
 
 /// <summary>
-/// Настройка маппинга для BookingMeetingRoom
+/// Настройка профиля маппинга для BookingMeetingRoom
 /// </summary>
 public class BookingMeetingRoomProfileMapping: Profile
 {
+    /// <summary>
+    /// Маппинг
+    /// </summary>
     public BookingMeetingRoomProfileMapping()
     {
         CreateMap<BookingMeetingRoom, BookingMeetingRoomDto>()

@@ -16,8 +16,10 @@ public static class ServiceCollectionExtensions
     {
         // Подключение RabbitMq
         //services.AddScoped<IConnectionRabbit, ConnectionRabbit>();
+        
         // Подключение Kafka
         //services.AddScoped<IConnectionKafka, ConnectionKafka>();
+        
         // Подключение Telegram
         services.AddScoped<IConnectionTelegram, ConnectionTelegram>();
 

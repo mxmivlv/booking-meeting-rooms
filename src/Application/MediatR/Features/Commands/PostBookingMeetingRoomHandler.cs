@@ -42,7 +42,7 @@ public class PostBookingMeetingRoomHandler: ICommandHandler<PostBookingMeetingRo
     /// </summary>
     /// <param name="command">Команда</param>
     /// <param name="cancellationToken">Токен</param>
-    /// <returns>Данные о забронированной комнаты</returns>
+    /// <returns>Информацию о бронировании</returns>
     public async Task<BookingMeetingRoomDto> Handle(PostBookingMeetingRoomCommand command, CancellationToken cancellationToken)
     {
         // Получить дату

@@ -16,8 +16,10 @@ public static class ServiceCollectionExtensions
     {
         // Получение сообщений с помощью RabbitMq
         //services.AddScoped<IConsumerBus, RabbitMqService>();
+        
         // Получение сообщений с помощью Kafka
         //services.AddScoped<IConsumerBus, KafkaService>();
+        
         // Отправка уведомлений в телеграм конкретным пользователям
         services.AddScoped<INotification, NotificationTelegramService>();
 

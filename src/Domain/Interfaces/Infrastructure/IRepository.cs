@@ -25,9 +25,17 @@ public interface IRepository
     public Task<MeetingRoom> GetScheduleAsync(Guid id);
 
     /// <summary>
-    /// Разбронирование комнат (HostedService)
+    /// Разбронирование комнат
     /// </summary>
-    public Task<ICollection<MeetingRoom>> UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
+    public Task UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
+
+    /// <summary>
+    /// Получение комнат для отправки оповещения о разбронировании
+    /// </summary>
+    /// <param name="currentDateOnly">Текущая дата</param>
+    /// <param name="currentTimeOnly">Текущее время</param>
+    /// <returns>Коллекция бронирований</returns>
+    public Task<List<BookingMeetingRoom>> UnbookingNotificationAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly);
 
     /// <summary>
     /// Получения комнат для отправки оповещения
@@ -35,6 +43,6 @@ public interface IRepository
     /// <param name="currentDateOnly">Текущая дата</param>
     /// <param name="currentTimeOnly">Текущее время</param>
     /// <param name="maxTimeOnly">Максимальное время для поиска броней</param>
-    /// <returns>Коллекцию бронирований</returns>
-    public ICollection<BookingMeetingRoom> GetRoomsForNotification(DateOnly currentDateOnly, TimeOnly currentTimeOnly, TimeOnly maxTimeOnly);
+    /// <returns>Коллекция бронирований</returns>
+    public List<BookingMeetingRoom> GetRoomsForNotification(DateOnly currentDateOnly, TimeOnly currentTimeOnly, TimeOnly maxTimeOnly);
 }

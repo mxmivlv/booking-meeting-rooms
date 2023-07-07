@@ -63,9 +63,9 @@ public class RabbitMqService: IConsumerBus
             var content = Encoding.UTF8.GetString(ea.Body.ToArray());
 
             var message = JsonConvert.DeserializeObject<MessageNotification>(content);
-            
+
             // Отправить сообщение в телеграм
-            _notification.SendMessage(message.Text, message.IdChat);
+            _notification.SendMessage(message.IdChat, message.Text);
 
             _connect.Channel.BasicAck(ea.DeliveryTag, false);
         };

@@ -8,6 +8,8 @@ namespace Notification.Infrastructure.Interfaces.Connections;
 /// </summary>
 public interface IConnectionTelegram
 {
+    #region Свойства
+
     /// <summary>
     /// Bot Telegram 
     /// </summary>
@@ -17,4 +19,6 @@ public interface IConnectionTelegram
     /// Настройки Telegram
     /// </summary>
     public TelegramSettings Settings { get; }
+
+    #endregion
 }

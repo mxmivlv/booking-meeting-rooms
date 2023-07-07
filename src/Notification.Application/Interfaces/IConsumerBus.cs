@@ -5,8 +5,12 @@
 /// </summary>
 public interface IConsumerBus
 {
+    #region Свойство
+
     /// <summary>
     /// Получить новые сообщения из шины
     /// </summary>
     public void Listen();
+
+    #endregion
 }

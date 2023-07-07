@@ -42,8 +42,7 @@ public class PostBookingNotificationHandler: IQueryHandler<PostBookingNotificati
         var messageBooking = new MessageNotification
         (
             465309919,
-            "Комната забронирована",
-            "Дополнительное описание"
+            "Комната забронирована"
         );
         await _publishBusService.SendMessageAsync(messageBooking);
         

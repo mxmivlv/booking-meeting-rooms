@@ -35,7 +35,7 @@ public class NotificationTelegramService: INotification
      /// Отправить сообщение с помощью бота
      /// </summary>
      /// <param name="message">Сообщение</param>
-     public async Task SendMessage(string message, long idChat)
+     public async Task SendMessage(long idChat, string message)
      {
          if (message != null)
          {

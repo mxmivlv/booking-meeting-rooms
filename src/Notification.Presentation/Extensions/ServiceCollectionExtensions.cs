@@ -17,7 +17,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddNotificationPresentation(this IServiceCollection services, NotificationInfrastructureSettings settings)
     {
         // Если реализация шин базовая, то подключается hosted service
-        // если реализация шин с помошью MassTransit, то подключается MassTransit
         //services.AddHostedService<NotificationHostedService>();
 
         // Работа с помощью MassTransit

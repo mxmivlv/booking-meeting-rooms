@@ -1,7 +1,12 @@
 ﻿namespace Infrastructure.Settings.Kafka;
 
+/// <summary>
+/// Настройки Kafka
+/// </summary>
 public class KafkaSettings
 {
+    #region Свойства
+
     /// <summary>
     /// Сервер Kafka
     /// </summary>
@@ -26,4 +31,6 @@ public class KafkaSettings
     /// Пароль
     /// </summary>
     public string SaslPassword { get; set; }
+
+    #endregion
 }

@@ -6,6 +6,9 @@ using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Connections;
 
+/// <summary>
+/// Подключение к Kafka
+/// </summary>
 public class ConnectionKafka: IConnectionKafka
 {
     #region Поля
@@ -42,10 +45,10 @@ public class ConnectionKafka: IConnectionKafka
         var config = new ProducerConfig
         {
             BootstrapServers = Settings.BootstrapServers,
-            SecurityProtocol = SecurityProtocol.SaslSsl,
-            SaslMechanism = SaslMechanism.Plain,
-            SaslUsername = Settings.SaslUsername,
-            SaslPassword = Settings.SaslPassword
+            //SecurityProtocol = SecurityProtocol.SaslSsl,
+            //SaslMechanism = SaslMechanism.Plain,
+            //SaslUsername = Settings.SaslUsername,
+            //SaslPassword = Settings.SaslPassword
         };
         Producer = new ProducerBuilder<Null, string>(config).Build();
     }

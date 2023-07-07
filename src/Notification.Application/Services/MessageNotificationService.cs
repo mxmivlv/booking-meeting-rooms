@@ -30,13 +30,13 @@ public class MessageNotificationService: IConsumer<MessageNotification>
     #region Метод
 
     /// <summary>
-    /// Обработка входящих сообщений
+    /// Обработка входящих сообщений и отправка оповещения
     /// </summary>
     /// <param name="context">Модель</param>
     public Task Consume(ConsumeContext<MessageNotification> context)
     {
         var message = context.Message;
-        _notification.SendMessage(message.Text, message.IdChat);
+        _notification.SendMessage(message.IdChat, message.Text);
         
         return Task.CompletedTask;
     }

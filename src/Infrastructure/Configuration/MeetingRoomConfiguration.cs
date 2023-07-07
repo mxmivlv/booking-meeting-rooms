@@ -11,6 +11,9 @@ public class MeetingRoomConfiguration : IEntityTypeConfiguration<MeetingRoom>
 {
     #region Метод
 
+    /// <summary>
+    /// Конфигурация
+    /// </summary>
     public void Configure(EntityTypeBuilder<MeetingRoom> builder)
     {
         builder.HasKey(q => q.IdRoom);

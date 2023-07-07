@@ -5,6 +5,8 @@
 /// </summary>
 public class RabbitMqSettings
 {
+    #region Свойства
+
     /// <summary>
     /// Подключение к RabbitMQ
     /// </summary>
@@ -29,4 +31,6 @@ public class RabbitMqSettings
     /// Название очереди RabbitMQ, для пользователей
     /// </summary>
     public string Queue { get; set; }
+
+    #endregion
 }

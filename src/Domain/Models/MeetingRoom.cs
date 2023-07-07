@@ -25,7 +25,7 @@ public class MeetingRoom
     /// <summary>
     /// Расписание комнаты (все брони)
     /// </summary>
-    public ICollection<BookingMeetingRoom> BookingMeetingRooms { get; private set; }
+    public List<BookingMeetingRoom> BookingMeetingRooms { get; private set; }
 
     #endregion
 
@@ -130,6 +130,6 @@ public class MeetingRoom
             BookingMeetingRooms.Remove(item);
         }
     }
-
+    
     #endregion
 }

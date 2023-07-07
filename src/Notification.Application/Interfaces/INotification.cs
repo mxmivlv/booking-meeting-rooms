@@ -5,10 +5,14 @@
 /// </summary>
 public interface INotification
 {
+    #region Свойство
+
     /// <summary>
-    /// Отправка оповещения
+    /// Отправить оповещение
     /// </summary>
-    /// <param name="message">Текст сообщения</param>
-    /// <param name="idChat">Id чата пользователя</param>
-    public Task SendMessage(string message, long idChat);
+    /// <param name="idChat">Id чата</param>
+    /// <param name="message">Сообщение</param>
+    public Task SendMessage(long idChat, string message);
+
+    #endregion
 }

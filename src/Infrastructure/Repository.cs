@@ -36,7 +36,7 @@ public class Repository : IRepository
     /// <param name="dateMeeting">Дата бронирования</param>
     /// <param name="startTimeMeeting">Время начала брони</param>
     /// <param name="endTimeMeeting">Время конца брони</param>
-    /// <returns>Комнату с данными</returns>
+    /// <returns>Информацию о бронировании</returns>
     public async Task<BookingMeetingRoom> BookingMeetingRoomAsync(Guid id, DateOnly dateMeeting, TimeOnly startTimeMeeting, TimeOnly endTimeMeeting)
     {
         var meetingRoom = await _context.Set<MeetingRoom>()
@@ -53,7 +53,7 @@ public class Repository : IRepository
     /// Получение расписание комнаты
     /// </summary>
     /// <param name="id">Id комнаты</param>
-    /// <returns>Расписание комнаты</returns>
+    /// <returns>Команту с распианием</returns>
     public async Task<MeetingRoom> GetScheduleAsync(Guid id)
     {
         var meetingRoom = await _context.Set<MeetingRoom>()
@@ -67,9 +67,12 @@ public class Repository : IRepository
     }
 
     /// <summary>
-    /// Разбронирование комнаты
+    /// Разбронирование комнат
     /// </summary>
-    public async Task<ICollection<MeetingRoom>> UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
+    /// <param name="currentDateOnly">Текущая дата</param>
+    /// <param name="currentTimeOnly">Текущее время</param>
+    /// <returns>Коллекция комнат, которую разбронировали</returns>
+    public async Task UnbookingMeetingRoomAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
     {
         var meetingRooms = await _context.Set<MeetingRoom>()
             .Include(e => e.BookingMeetingRooms)
@@ -80,8 +83,20 @@ public class Repository : IRepository
             // Разбронировать комнату
             item.UnbookingRoom(currentDateOnly, currentTimeOnly);
         }
+    }
 
-        return meetingRooms;
+    /// <summary>
+    /// Получение комнат для отправки оповещения о разбронировании
+    /// </summary>
+    /// <param name="currentDateOnly">Текущая дата</param>
+    /// <param name="currentTimeOnly">Текущее время</param>
+    /// <returns>Коллекция бронирований</returns>
+    public async Task<List<BookingMeetingRoom>> UnbookingNotificationAsync(DateOnly currentDateOnly, TimeOnly currentTimeOnly)
+    {
+        return await _context.Set<BookingMeetingRoom>()
+            .Where(e => (e.DateMeeting < currentDateOnly) 
+                        || (e.DateMeeting == currentDateOnly && e.EndTimeMeeting < currentTimeOnly))
+            .ToListAsync();
     }
 
     /// <summary>
@@ -91,7 +106,7 @@ public class Repository : IRepository
     /// <param name="currentTimeOnly">Текущее время</param>
     /// <param name="maxTimeOnly">Сдвиг по времени, чтоб был диапазон(10:00 - 11:00)</param>
     /// <returns>Коллекцию бронирований</returns>
-    public ICollection<BookingMeetingRoom> GetRoomsForNotification(DateOnly currentDateOnly, TimeOnly currentTimeOnly, TimeOnly maxTimeOnly)
+    public List<BookingMeetingRoom> GetRoomsForNotification(DateOnly currentDateOnly, TimeOnly currentTimeOnly, TimeOnly maxTimeOnly)
     {
         var collectionMeetingRoom =_context.Set<BookingMeetingRoom>()
             .Where(e => ((e.DateMeeting == currentDateOnly) 

@@ -21,11 +21,6 @@ public interface IMessage
     /// Текст сообщения
     /// </summary>
     public string Text { get; set; }
-    
-    /// <summary>
-    /// Дополнительное описание
-    /// </summary>
-    public string Description { get; set; }
 
     #endregion
 }

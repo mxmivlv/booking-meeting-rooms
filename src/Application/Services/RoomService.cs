@@ -78,9 +78,10 @@ public class RoomService: IRoomService
     }
 
     /// <summary>
-    /// Разбронирование комнаты
+    /// Разбронирование комнат
     /// </summary>
-    public async Task UnbookingRoomAsync()
+    /// <returns>Коллекция комнат, которую разбронировали</returns>
+    public async Task<List<BookingMeetingRoom>> UnbookingRoomAsync()
     {
         // Максимальное время блокировки при сбое
         var expiry = TimeSpan.FromSeconds(30);
@@ -99,8 +100,12 @@ public class RoomService: IRoomService
                 var currentDateOnly = DateOnly.FromDateTime(DateTime.Now);
                 // Получить текущее время
                 var currentTimeOnly = TimeOnly.FromDateTime(DateTime.Now);
-        
+
+                // Разбронировать комнаты
                 await _repository.UnbookingMeetingRoomAsync(currentDateOnly, currentTimeOnly);
+                
+                // Получить данные для оповещения о разбронировании комнат
+                return await _repository.UnbookingNotificationAsync(currentDateOnly, currentTimeOnly);
             }
             else
             {

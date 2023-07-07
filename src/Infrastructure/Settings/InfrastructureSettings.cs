@@ -10,6 +10,8 @@ namespace Infrastructure.Settings;
 /// </summary>
 public class InfrastructureSettings: IOptions<InfrastructureSettings>
 {
+    #region Свойства
+
     public InfrastructureSettings Value => this;
     
     /// <summary>
@@ -31,4 +33,6 @@ public class InfrastructureSettings: IOptions<InfrastructureSettings>
     /// Настройки Kafka
     /// </summary>
     public KafkaSettings KafkaSettings { get; set; }
+
+    #endregion
 }

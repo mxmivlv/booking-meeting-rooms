@@ -50,17 +50,17 @@ public class KafkaService: IConsumerBus
                 {
                     var content = _connect.Consumer.Consume(cts.Token);
                     var message = JsonConvert.DeserializeObject<MessageNotification>(content.Value);
-                    _notification.SendMessage(message.Text, message.IdChat);
+
+                    _notification.SendMessage(message.IdChat, message.Text);
                 }
-                catch (ConsumeException e)
+                catch (ConsumeException)
                 {
-                    Console.WriteLine(e);
+                    _connect.Consumer.Close();
                 }
             }
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException)
         {
-            Console.WriteLine(e);
             _connect.Consumer.Close();
         }
     }

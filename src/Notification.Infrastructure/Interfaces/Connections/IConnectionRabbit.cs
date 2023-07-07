@@ -8,6 +8,8 @@ namespace Notification.Infrastructure.Interfaces.Connections;
 /// </summary>
 public interface IConnectionRabbit
 {
+    #region Свойства
+
     /// <summary>
     /// Канал к которому подключен Rabbit, для пользователей
     /// </summary>
@@ -17,4 +19,6 @@ public interface IConnectionRabbit
     /// Настройки Rabbit
     /// </summary>
     public RabbitMqSettings Settings { get; }
+
+    #endregion
 }

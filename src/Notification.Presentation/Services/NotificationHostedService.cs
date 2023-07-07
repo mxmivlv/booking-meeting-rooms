@@ -9,6 +9,9 @@ public class NotificationHostedService: BackgroundService
 {
     #region Поле
 
+    /// <summary>
+    /// Сервис провайдер
+    /// </summary>
     private readonly IServiceProvider _serviceProvider;
 
     #endregion

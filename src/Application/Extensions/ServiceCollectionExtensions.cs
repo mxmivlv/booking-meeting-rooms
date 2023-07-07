@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
         // Сервис для отправки оповещения, RebbitMQ
         //services.AddScoped<IPublishBusService<IMessage>, RabbitMqService<IMessage>>();
         //services.AddScoped<IPublishBusService<IMessage>, MassTransitRabbitMqService<IMessage>>();
+        
         // Сервис для отправки оповещения, Kafka
         //services.AddScoped<IPublishBusService<IMessage>, KafkaService<IMessage>>();
         services.AddScoped<IPublishBusService<IMessage>, MassTransitKafkaService<IMessage>>();

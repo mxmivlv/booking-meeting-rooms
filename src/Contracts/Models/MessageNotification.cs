@@ -4,6 +4,8 @@ namespace Contracts.Models;
 
 public class MessageNotification : IMessage
 {
+    #region Свойства
+
     /// <summary>
     /// Id сообщения
     /// </summary>
@@ -18,17 +20,17 @@ public class MessageNotification : IMessage
     /// Текст сообщения
     /// </summary>
     public string Text { get;  set; }
-    
-    /// <summary>
-    /// Дополнительное описание
-    /// </summary>
-    public string Description { get;  set; }
 
-    public MessageNotification(long idChat, string text, string description)
+    #endregion
+
+    #region Конструктор
+
+    public MessageNotification(long idChat, string text)
     {
         Id = Guid.NewGuid();
         IdChat = idChat;
         Text = text;
-        Description = description;
     }
+
+    #endregion
 }

@@ -7,6 +7,8 @@ namespace Notification.Infrastructure.Settings;
 
 public class NotificationInfrastructureSettings: IOptions<NotificationInfrastructureSettings>
 {
+    #region Свойства
+
     public NotificationInfrastructureSettings Value => this;
     
     /// <summary>
@@ -23,4 +25,6 @@ public class NotificationInfrastructureSettings: IOptions<NotificationInfrastruc
     /// Настройки Telegram
     /// </summary>
     public TelegramSettings TelegramSettings { get; set; }
+
+    #endregion
 }

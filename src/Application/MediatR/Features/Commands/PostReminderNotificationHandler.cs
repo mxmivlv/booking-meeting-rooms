@@ -53,20 +53,22 @@ public class PostReminderNotificationHandler: ICommandHandler<PostReminderNotifi
         // Максимально время
         var maxTimeOnly = currentTimeOnly.AddHours(1);
         
-        var collectionMeetingRoom = _repository.GetRoomsForNotification(currentDateOnly, currentTimeOnly, maxTimeOnly);
-
-        foreach (var item in collectionMeetingRoom)
+        // Коллекция для оповещения
+        var collectionBooking = _repository.GetRoomsForNotification(currentDateOnly, currentTimeOnly, maxTimeOnly);
+        
+        for (int i = 0; i < collectionBooking.Count; i++)
         {
-            // Достать данные из бд и создать конкретный тип сообщения с id чата клиента из бд для отправки сообщения
             var message = new MessageNotification
             (
                 465309919,
-                "Оповещение - напоминание о бронировании",
-                "Дополнительное описание"
+                "Оповещение - напоминание о бронировании.\n " +
+                $"Id комнаты: {collectionBooking[i].MeetingRoomId}.\n " +
+                $"Дата: {collectionBooking[i].DateMeeting}.\n " +
+                $"Время: {collectionBooking[i].StartTimeMeeting} - {collectionBooking[i].EndTimeMeeting}."
             );
             await _publishBusService.SendMessageAsync(message);
         }
-
+        
         return await Unit.Task;
     }
 
