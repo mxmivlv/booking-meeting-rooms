@@ -2,7 +2,7 @@
 using Contracts.Interface;
 using MassTransit;
 
-namespace Application.Services;
+namespace Application.Services.Kafka;
 
 public class MassTransitKafkaService<T>: IPublishBusService<T> where T: IMessage
 {

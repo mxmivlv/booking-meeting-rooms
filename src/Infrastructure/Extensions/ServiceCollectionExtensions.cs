@@ -33,18 +33,21 @@ public static class ServiceCollectionExtensions
             .AddKafka(new ProducerConfig
             {
                 BootstrapServers = settings.KafkaSettings.BootstrapServers,
-                //SecurityProtocol = SecurityProtocol.SaslSsl,
-                //SaslMechanism = SaslMechanism.Plain,
-                //SaslUsername = settings.KafkaSettings.SaslUsername,
-                //SaslPassword = settings.KafkaSettings.SaslPassword
+                SecurityProtocol = SecurityProtocol.SaslSsl,
+                SaslMechanism = SaslMechanism.Plain,
+                SaslUsername = settings.KafkaSettings.SaslUsername,
+                SaslPassword = settings.KafkaSettings.SaslPassword
             }, settings.KafkaSettings.TopicHealth);
         
         // Подключение шин
         //services.AddScoped<IConnectionRabbitMq, ConnectionRabbitMq>();
         //services.AddMassTransitRabbitMq(settings);
         //services.AddScoped<IConnectionKafka, ConnectionKafka>();
-        services.AddMassTransitKafka(settings);
+        //services.AddMassTransitKafka(settings);
         
+        // Подключение gRPC
+        services.AddScoped<IConnectionGrpc, ConnectionGrpc>();
+
         // Подключение Redis
         services.AddScoped<IConnectionRedis, ConnectionRedis>();
 
@@ -94,14 +97,14 @@ public static class ServiceCollectionExtensions
                 {
                     host.Host(settings.KafkaSettings.BootstrapServers, h =>
                     {
-                        /*h.UseSasl(sasl =>
+                        h.UseSasl(sasl =>
                         {
                             sasl.Username = settings.KafkaSettings.SaslUsername;
                             sasl.Password = settings.KafkaSettings.SaslPassword;
                             sasl.Mechanism = SaslMechanism.Plain;
-                        });*/
+                        });
                     });
-                    //host.SecurityProtocol = SecurityProtocol.SaslSsl;
+                    host.SecurityProtocol = SecurityProtocol.SaslSsl;
                 });
             });
         });

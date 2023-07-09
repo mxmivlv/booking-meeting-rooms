@@ -21,8 +21,10 @@ public static class ServiceCollectionExtensions
 
         // Работа с помощью MassTransit
         //services.AddMassTransitRabbitMq(settings);
-        services.AddMassTransitKafka(settings);
-        
+        //services.AddMassTransitKafka(settings);
+
+        services.AddGrpc();
+
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -80,14 +82,14 @@ public static class ServiceCollectionExtensions
                 {
                     host.Host(settings.KafkaSettings.BootstrapServers, h =>
                     {
-                        /*h.UseSasl(sasl =>
+                        h.UseSasl(sasl =>
                         {
                             sasl.Username = settings.KafkaSettings.SaslUsername;
                             sasl.Password = settings.KafkaSettings.SaslPassword;
                             sasl.Mechanism = SaslMechanism.Plain;
-                        });*/
+                        });
                     });
-                    //host.SecurityProtocol = SecurityProtocol.SaslSsl;
+                    host.SecurityProtocol = SecurityProtocol.SaslSsl;
                     
                     host.TopicEndpoint<MessageNotification>(
                         settings.KafkaSettings.TopicName, 
@@ -98,7 +100,6 @@ public static class ServiceCollectionExtensions
                         });
                 });
             });
-            
         });
         return services;
     }

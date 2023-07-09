@@ -61,9 +61,9 @@ public class PostReminderNotificationHandler: ICommandHandler<PostReminderNotifi
             var message = new MessageNotification
             (
                 465309919,
-                "Оповещение - напоминание о бронировании.\n " +
-                $"Id комнаты: {collectionBooking[i].MeetingRoomId}.\n " +
-                $"Дата: {collectionBooking[i].DateMeeting}.\n " +
+                "Оповещение - напоминание о бронировании.\n" +
+                $"Id комнаты: {collectionBooking[i].MeetingRoomId}.\n" +
+                $"Дата: {collectionBooking[i].DateMeeting}.\n" +
                 $"Время: {collectionBooking[i].StartTimeMeeting} - {collectionBooking[i].EndTimeMeeting}."
             );
             await _publishBusService.SendMessageAsync(message);

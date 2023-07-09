@@ -5,7 +5,7 @@ using Notification.Application.Interfaces;
 namespace Notification.Application.Services;
 
 /// <summary>
-/// Сервис для обработки входящих сообщений
+/// Сервис для обработки входящих сообщений, MassTransit
 /// </summary>
 public class MessageNotificationService: IConsumer<MessageNotification>
 {

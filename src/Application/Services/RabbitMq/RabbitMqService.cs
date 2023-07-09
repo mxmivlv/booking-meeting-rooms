@@ -5,7 +5,7 @@ using Infrastructure.Interfaces.Connections;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 
-namespace Application.Services;
+namespace Application.Services.RabbitMq;
 
 /// <summary>
 /// Сервис для отправки сообщений в шину с помощью RabbitMq

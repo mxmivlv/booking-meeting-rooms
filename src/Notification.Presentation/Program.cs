@@ -1,4 +1,5 @@
 using Notification.Application.Extensions;
+using Notification.Application.Services;
 using Notification.Infrastructure.Extensions;
 using Notification.Infrastructure.Settings;
 using Notification.Presentation.Extensions;
@@ -20,6 +21,8 @@ builder.Services
     .AddNotificationApplication();
 
 var app = builder.Build();
+
+app.MapGrpcService<GrpcService>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

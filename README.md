@@ -79,7 +79,11 @@
     Итерация 7
         1. Infrastructure:
             - Реализована работа MassTransit с Kafka.
+            - Реализована работа с gRPC (клиент).
+        2. Application:
+            - Реализован сервис для отправки сообщений через gRPC.
         2. Notification.Application:
             - Реализована работа MassTransit с Kafka.
+            - Реализована работа с gRPC (сервер).
 
     *Все доп сервисы подняты локально в докере, кроме Prometheus

@@ -53,9 +53,9 @@ public class PostUnbookingMeetingRoomHandler: ICommandHandler<PostUnbookingMeeti
             var message = new MessageNotification
             (
                 -1001961900437,
-                "Комната разбронирована. \n " +
-                $"Id комнаты: {collectionBooking[i].MeetingRoomId}.\n " +
-                $"Дата: {collectionBooking[i].DateMeeting}.\n " +
+                "Комната разбронирована.\n" +
+                $"Id комнаты: {collectionBooking[i].MeetingRoomId}.\n" +
+                $"Дата: {collectionBooking[i].DateMeeting}.\n" +
                 $"Время: {collectionBooking[i].StartTimeMeeting} - {collectionBooking[i].EndTimeMeeting}."
             );
             await _publishBusService.SendMessageAsync(message);

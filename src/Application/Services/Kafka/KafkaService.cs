@@ -4,7 +4,7 @@ using Contracts.Interface;
 using Infrastructure.Interfaces.Connections;
 using Newtonsoft.Json;
 
-namespace Application.Services;
+namespace Application.Services.Kafka;
 
 public class KafkaService<T>: IPublishBusService<T> where T: IMessage
 {

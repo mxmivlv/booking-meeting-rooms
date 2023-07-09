@@ -27,7 +27,10 @@ public static class ServiceCollectionExtensions
         
         // Сервис для отправки оповещения, Kafka
         //services.AddScoped<IPublishBusService<IMessage>, KafkaService<IMessage>>();
-        services.AddScoped<IPublishBusService<IMessage>, MassTransitKafkaService<IMessage>>();
+        //services.AddScoped<IPublishBusService<IMessage>, MassTransitKafkaService<IMessage>>();
+        
+        // Сервис для отправки оповещения, gRPC
+        services.AddScoped<IPublishBusService<IMessage>, GrpcService<IMessage>>();
         
         // AutoMapper
         services.AddAutoMapper(typeof(MeetingRoomProfileMapping));

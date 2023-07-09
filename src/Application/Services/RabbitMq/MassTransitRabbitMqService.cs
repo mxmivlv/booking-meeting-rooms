@@ -4,7 +4,7 @@ using Infrastructure.Settings;
 using MassTransit;
 using Microsoft.Extensions.Options;
 
-namespace Application.Services;
+namespace Application.Services.RabbitMq;
 
 /// <summary>
 /// Сервис для отправки сообщений в шину с помощью MassTransit
