@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
         //services.AddMassTransitRabbitMq(settings);
         //services.AddMassTransitKafka(settings);
 
+        // Работа с помощью gRPC
         services.AddGrpc();
 
         services.AddControllers();
@@ -65,6 +66,9 @@ public static class ServiceCollectionExtensions
         return services;
     }
     
+    /// <summary>
+    /// Подключение MassTransit Kafka
+    /// </summary>
     private static IServiceCollection AddMassTransitKafka(this IServiceCollection services, NotificationInfrastructureSettings settings)
     {
         services.AddMassTransit(builder =>
